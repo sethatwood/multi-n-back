@@ -12,6 +12,7 @@ export const useGameStore = defineStore('game', {
     },
     stimulusHistory: [], // Keep track of past stimuli
     timer: null,
+    flashBorder: false,
   }),
   actions: {
     incrementScore() {
@@ -28,6 +29,11 @@ export const useGameStore = defineStore('game', {
       this.currentStimulus = newStimulus;
       this.stimulusHistory.push(newStimulus);
       console.log("New Stimulus set:", this.currentStimulus);
+      this.flashBorder = true;
+      // Reset flashBorder after a short delay
+      setTimeout(() => {
+        this.flashBorder = false;
+      }, 300); // delay can be adjusted
     },
     startGame() {
       this.setNewStimulus();

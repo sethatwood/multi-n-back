@@ -7,6 +7,7 @@
       :position="gameStore.currentStimulus.position"
       :color="gameStore.currentStimulus.color"
       :shape="gameStore.currentStimulus.shape"
+      :flashBorder="gameStore.flashBorder"
     />
     <div>
       <button
