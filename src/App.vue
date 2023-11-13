@@ -2,7 +2,8 @@
   <div v-if="showModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto" id="howToPlayModal">
     <div class="relative top-4 mx-auto p-5 border container shadow-lg rounded-md bg-white">
       <div class="instructions mt-2 px-4">
-        <h2 class="text-xl font-semibold">Welcome to Poly N-Back!</h2>
+        <img src="/logo.png" class="rounded-2xl" style="width: 180px; height: 180px; object-fit: contain;"/>
+        <h2 class="text-xl font-semibold mt-3">Welcome to Poly N-Back!</h2>
         <p class="text-md mt-2">
           Poly N-Back is a variation of the <a href="https://en.wikipedia.org/wiki/N-back" class="text-blue-500 hover:text-blue-700 underline" target="_blank">N-back</a> memory game designed to improve your cognitive skills.
         </p>
