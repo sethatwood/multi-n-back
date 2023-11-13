@@ -1,6 +1,6 @@
 <template>
   <div v-if="showModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto" id="howToPlayModal">
-    <div class="relative top-20 mx-auto p-5 border container shadow-lg rounded-md bg-white">
+    <div class="relative top-4 mx-auto p-5 border container shadow-lg rounded-md bg-white">
       <div class="instructions mt-2 px-4">
         <h2 class="text-xl font-semibold">Welcome to Poly N-Back!</h2>
         <p class="text-md mt-2">
