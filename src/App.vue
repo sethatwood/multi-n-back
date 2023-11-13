@@ -4,8 +4,10 @@
       <div class="instructions mt-2 px-4">
         <h2 class="text-xl font-semibold">Welcome to Poly N-Back!</h2>
         <p class="text-md mt-2">
-          Poly N-Back is a variation of the <a href="https://en.wikipedia.org/wiki/N-back" class="text-blue-500 hover:text-blue-700 underline" target="_blank">N-back</a> memory game designed to improve your cognitive skills</p>
-        <p class="text-md mt-2 font-semibold">
+          Poly N-Back is a variation of the <a href="https://en.wikipedia.org/wiki/N-back" class="text-blue-500 hover:text-blue-700 underline" target="_blank">N-back</a> memory game designed to improve your cognitive skills.
+        </p>
+        <div class="border mt-4" />
+        <p class="text-md mt-4 font-semibold">
           Here's how you can play:
         </p>
         <p class="text-md mt-2">
@@ -22,11 +24,11 @@
         </p>
       </div>
       <div class="items-center px-4 py-3">
-        <button @click="startGame" class="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300">
+        <button @click="startGame" class="mt-3 px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300">
           Start Game
         </button>
       </div>
-      <div class="text-center text-sm py-2">
+      <div class="text-center text-sm py-2 mt-2">
         Built by Human+AI collaboration with 💜
       </div>
     </div>
