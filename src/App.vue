@@ -1,19 +1,23 @@
 <template>
-  <div v-if="showModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" id="howToPlayModal">
-    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-        <div class="instructions text-center mt-2 px-4">
+  <div v-if="showModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto" id="howToPlayModal">
+    <div class="relative top-20 mx-auto p-5 border container shadow-lg rounded-md bg-white">
+        <div class="instructions mt-2 px-4">
           <h2 class="text-xl font-semibold">How to Play</h2>
-          <p class="text-sm mt-2">
-            Click the buttons (Position, Color, Shape) that match
+          <p class="text-md mt-2">
+            • Click the buttons (Position, Color, Shape) that match
             the stimuli you saw <strong>{{ gameStore.nBack }}</strong> turns ago.
+            Aim to remember and match each attribute (position, color, shape) as it appears.
           </p>
-          <p class="text-sm mt-2">
-            Correct responses increase your score,
-            incorrect responses decrease it.
+          <p class="text-md mt-2">
+            • Correct responses increase your score. Incorrect responses decrease it
+            and count as a strike.
           </p>
-          <p class="text-sm mt-2">
-            Aim to remember and match each attribute
-            (position, color, shape) as it appears.
+          <p class="text-md mt-2">
+            • The game ends if you accumulate 3 strikes. Aim to achieve the highest score possible
+            without hitting 3 strikes.
+          </p>
+          <p class="text-md mt-2">
+            • Your high score is recorded, so you can see your progress over time.
           </p>
         </div>
         <div class="items-center px-4 py-3">
@@ -25,7 +29,10 @@
   </div>
   <div class="container mx-auto px-4 py-5 text-center text-white bg-slate-700">
     <h1 class="text-2xl font-bold mb-5">Poly N-Back</h1>
-    <div class="mb-5">Time Left: {{ gameStore.timeLeft }}s</div>
+    <div class="mb-5">
+      <p>Time Left: {{ gameStore.timeLeft }}s</p>
+     <p class="text-md text-red-500">Strikes: {{ gameStore.incorrectResponses }}</p>
+    </div>
     <Stimulus
       class="mb-5"
       :position="gameStore.currentStimulus.position"
@@ -53,8 +60,14 @@
         Shape
       </button>
     </div>
-    <div class="mt-5">
+    <div class="mt-5 text-center">
       <p :class="scoreClass">Score: {{ gameStore.score }}</p>
+      <p class="text-sm text-green-500">High Score: {{ gameStore.highScore }}</p>
+      <button v-if="gameStore.incorrectResponses >= 3"
+              @click="startGame"
+              class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Restart Game
+      </button>
     </div>
   </div>
 </template>
@@ -77,10 +90,6 @@ export default {
       showModal.value = false;
       gameStore.startGame();
     };
-
-    // onMounted(() => {
-    //   gameStore.startGame();
-    // });
 
     onUnmounted(() => {
       gameStore.stopGame();
@@ -110,7 +119,14 @@ export default {
         : 'text-lg font-medium';
     });
 
-    return { gameStore, respond, showModal, startGame, buttonClass, scoreClass };
+    return {
+      gameStore,
+      respond,
+      showModal,
+      startGame,
+      buttonClass,
+      scoreClass
+    };
   },
 };
 </script>

@@ -19,6 +19,8 @@ export const useGameStore = defineStore('game', {
       color: false,
       shape: false,
     },
+    incorrectResponses: 0,
+    highScore: Number(localStorage.getItem('highScore')) || 0,
   }),
   actions: {
     setNewStimulus() {
@@ -66,10 +68,17 @@ export const useGameStore = defineStore('game', {
 
         if (isCorrect) {
           this.score += 1;
-          console.log("Correct response. Score incremented to:", this.score);
+          if (this.score > this.highScore) {
+            this.highScore = this.score;
+            localStorage.setItem('highScore', this.highScore.toString());
+          }
         } else {
           this.score -= 1;
-          console.log("Incorrect response. Score decremented to:", this.score);
+          this.incorrectResponses += 1;
+          if (this.incorrectResponses >= 3) {
+            this.stopGame();
+            alert("Game over! You've reached 3 strikes."); // Consider replacing with a Tailwind modal
+          }
         }
       } else {
         console.log("Not enough turns have passed to respond.");
@@ -78,6 +87,8 @@ export const useGameStore = defineStore('game', {
       this.respondedThisTurn[stimulusType] = true;
     },
     startGame() {
+      this.score = 0;
+      this.incorrectResponses = 0;
       console.log("Starting game");
       this.setNewStimulus();
       this.timer = setInterval(() => {
