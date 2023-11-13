@@ -82,11 +82,21 @@
         Restart Game
       </button>
     </div>
+    <!-- Buttons to toggle deterministic mode and pause the game -->
+    <button
+      @click="toggleDeterministicMode"
+      class="m-2 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+    >
+      {{ gameStore.isDeterministic ? 'Disable' : 'Enable' }} Deterministic
+    </button>
+    <button @click="togglePause" class="m-2 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+      {{ gameStore.isPaused ? 'Resume' : 'Pause' }} Game
+    </button>
   </div>
 </template>
 
 <script>
-import { onMounted, onUnmounted, ref, watch, computed } from 'vue';
+import { onUnmounted, ref, watch, computed } from 'vue';
 import { useGameStore } from './store/gameStore';
 import Stimulus from './Stimulus.vue';
 
@@ -102,6 +112,14 @@ export default {
     const startGame = () => {
       showModal.value = false;
       gameStore.startGame();
+    };
+
+    const toggleDeterministicMode = () => {
+      gameStore.toggleDeterministicMode();
+    };
+
+    const togglePause = () => {
+      gameStore.togglePause();
     };
 
     onUnmounted(() => {
@@ -145,6 +163,8 @@ export default {
       buttonClass,
       scoreClass,
       calculateAccuracy,
+      toggleDeterministicMode,
+      togglePause,
     };
   },
 };

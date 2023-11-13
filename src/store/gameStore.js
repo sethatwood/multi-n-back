@@ -23,27 +23,42 @@ export const useGameStore = defineStore('game', {
     potentialCorrectAnswers: 0,
     highScore: Number(localStorage.getItem('highScore')) || 0,
     highScoreData: JSON.parse(localStorage.getItem('highScoreData')) || { score: 0, potentialCorrectAnswers: 0 },
-
+    isDeterministic: false,
+    isPaused: false,
+    deterministicIndex: 0,
+    deterministicStimuli: [
+      { position: 'left', color: 'purple', shape: 'circle' },
+      { position: 'center', color: 'green', shape: 'square' },
+      { position: 'right', color: 'blue', shape: 'triangle' },
+      // Add more predefined stimuli as needed
+    ],
   }),
   actions: {
     setNewStimulus() {
+      if (this.isPaused) return; // Skip setting new stimulus if paused
+
       this.respondedThisTurn = {
         position: false,
         color: false,
         shape: false,
       };
 
-      const positions = ['left', 'center', 'right']; // Updated positions
-      const colors = ['purple', 'green', 'blue']; // Updated colors
-      const shapes = ['circle', 'square', 'triangle']; // Updated shapes
+      if (this.isDeterministic) {
+        // Use deterministic stimuli
+        this.currentStimulus = this.deterministicStimuli[this.deterministicIndex];
+        this.deterministicIndex = (this.deterministicIndex + 1) % this.deterministicStimuli.length;
+      } else {
+        // Regular random stimulus logic
+        const positions = ['left', 'center', 'right'];
+        const colors = ['purple', 'green', 'blue'];
+        const shapes = ['circle', 'square', 'triangle'];
 
-      const newStimulus = {
-        position: positions[Math.floor(Math.random() * positions.length)],
-        color: colors[Math.floor(Math.random() * colors.length)],
-        shape: shapes[Math.floor(Math.random() * shapes.length)],
-      };
-
-      this.currentStimulus = newStimulus;
+        this.currentStimulus = {
+          position: positions[Math.floor(Math.random() * positions.length)],
+          color: colors[Math.floor(Math.random() * colors.length)],
+          shape: shapes[Math.floor(Math.random() * shapes.length)],
+        };
+      }
 
       // Increase potential correct answers after enough history is available
       if (this.stimulusHistory.length >= this.nBack) {
@@ -63,6 +78,17 @@ export const useGameStore = defineStore('game', {
       setTimeout(() => {
         this.flashBorder = false;
       }, 300);
+    },
+    toggleDeterministicMode() {
+      this.isDeterministic = !this.isDeterministic;
+    },
+    togglePause() {
+      this.isPaused = !this.isPaused;
+      if (this.isPaused) {
+        clearInterval(this.timer);
+      } else {
+        this.startGame();
+      }
     },
     respondToStimulus(stimulusType) {
       console.log("Responding to stimulus type:", stimulusType);
