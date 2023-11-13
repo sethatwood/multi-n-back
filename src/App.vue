@@ -30,7 +30,7 @@
       </button>
     </div>
     <div class="mt-5">
-      <p class="text-lg font-medium text-center">Score: {{ gameStore.score }}</p>
+      <p :class="scoreClass">Score: {{ gameStore.score }}</p>
     </div>
   </div>
 </template>
@@ -38,7 +38,7 @@
 <script>
 import { useGameStore } from './store/gameStore';
 import Stimulus from './Stimulus.vue';
-import { onMounted, onUnmounted } from 'vue';
+import { onMounted, onUnmounted, ref, watch, computed } from 'vue';
 
 export default {
   name: 'App',
@@ -66,7 +66,21 @@ export default {
       }`;
     };
 
-    return { gameStore, respond, buttonClass };
+    const previousScore = ref(gameStore.score);
+
+    watch(() => gameStore.score, (newScore, oldScore) => {
+      previousScore.value = oldScore;
+    });
+
+    const scoreClass = computed(() => {
+      return gameStore.score > previousScore.value
+        ? 'text-lg font-medium text-green-500'
+        : gameStore.score < previousScore.value
+        ? 'text-lg font-medium text-red-500'
+        : 'text-lg font-medium';
+    });
+
+    return { gameStore, respond, buttonClass, scoreClass };
   },
 };
 </script>
