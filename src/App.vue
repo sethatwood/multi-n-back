@@ -68,8 +68,14 @@
       </button>
     </div>
     <div class="mt-5 text-center">
-      <p :class="scoreClass">Score: {{ gameStore.score }}</p>
-      <p class="text-sm uppercase text-green-500">High Score: {{ gameStore.highScore }}</p>
+      <p class="text-lg font-medium">
+        Score: <span :class="scoreClass">{{ gameStore.score }}</span>/{{ gameStore.potentialCorrectAnswers }}
+        ({{ calculateAccuracy(gameStore.score, gameStore.potentialCorrectAnswers) }}%)
+      </p>
+      <p class="text-sm uppercase text-green-500">
+        High Score: {{ gameStore.highScoreData.score }}/{{ gameStore.highScoreData.potentialCorrectAnswers }}
+        ({{ calculateAccuracy(gameStore.highScoreData.score, gameStore.highScoreData.potentialCorrectAnswers) }}%)
+      </p>
       <button v-if="gameStore.incorrectResponses >= 3"
               @click="startGame"
               class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
@@ -120,11 +126,16 @@ export default {
 
     const scoreClass = computed(() => {
       return gameStore.score > previousScore.value
-        ? 'text-lg font-medium text-green-500'
+        ? 'text-green-500'
         : gameStore.score < previousScore.value
-        ? 'text-lg font-medium text-red-500'
+        ? 'text-red-500'
         : 'text-lg font-medium';
     });
+
+    const calculateAccuracy = (score, total) => {
+      if (total === 0) return 0;
+      return Math.round((score / total) * 100);
+    };
 
     return {
       gameStore,
@@ -132,7 +143,8 @@ export default {
       showModal,
       startGame,
       buttonClass,
-      scoreClass
+      scoreClass,
+      calculateAccuracy,
     };
   },
 };

@@ -20,7 +20,10 @@ export const useGameStore = defineStore('game', {
       shape: false,
     },
     incorrectResponses: 0,
+    potentialCorrectAnswers: 0,
     highScore: Number(localStorage.getItem('highScore')) || 0,
+    highScoreData: JSON.parse(localStorage.getItem('highScoreData')) || { score: 0, potentialCorrectAnswers: 0 },
+
   }),
   actions: {
     setNewStimulus() {
@@ -41,8 +44,21 @@ export const useGameStore = defineStore('game', {
       };
 
       this.currentStimulus = newStimulus;
-      this.stimulusHistory.push(newStimulus);
-      console.log("New Stimulus:", newStimulus);
+
+      // Increase potential correct answers after enough history is available
+      if (this.stimulusHistory.length >= this.nBack) {
+        const nBackStimulus = this.stimulusHistory[this.stimulusHistory.length - this.nBack];
+        let potentialMatches = 0;
+
+        potentialMatches += nBackStimulus.position === this.currentStimulus.position ? 1 : 0;
+        potentialMatches += nBackStimulus.color === this.currentStimulus.color ? 1 : 0;
+        potentialMatches += nBackStimulus.shape === this.currentStimulus.shape ? 1 : 0;
+
+        this.potentialCorrectAnswers += potentialMatches;
+      }
+
+      this.stimulusHistory.push({ ...this.currentStimulus });
+      console.log("New Stimulus:", this.currentStimulus);
       this.flashBorder = true;
       setTimeout(() => {
         this.flashBorder = false;
@@ -68,9 +84,12 @@ export const useGameStore = defineStore('game', {
 
         if (isCorrect) {
           this.score += 1;
-          if (this.score > this.highScore) {
-            this.highScore = this.score;
-            localStorage.setItem('highScore', this.highScore.toString());
+          if (this.score > this.highScoreData.score) {
+            this.highScoreData = {
+              score: this.score,
+              potentialCorrectAnswers: this.potentialCorrectAnswers
+            };
+            localStorage.setItem('highScoreData', JSON.stringify(this.highScoreData));
           }
         } else {
           this.score -= 1;
