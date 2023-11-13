@@ -35,14 +35,16 @@
     <div class="instructions text-center mt-8 px-4">
       <h2 class="text-xl font-semibold">How to Play</h2>
       <p class="text-sm mt-2">
-        Click the buttons (Position, Color, Shape) that match the stimuli you saw
-        <strong>{{ gameStore.nBack }}</strong> turns ago.
+        Click the buttons (Position, Color, Shape) that match<br>
+        the stimuli you saw <strong>{{ gameStore.nBack }}</strong> turns ago.
       </p>
       <p class="text-sm mt-2">
-        Correct responses increase your score, incorrect responses decrease it.
+        Correct responses increase your score,<br>
+        incorrect responses decrease it.
       </p>
       <p class="text-sm mt-2">
-        Aim to remember and match each attribute (position, color, shape) as it appears.
+        Aim to remember and match each attribute<br>
+        (position, color, shape) as it appears.
       </p>
     </div>
   </div>
