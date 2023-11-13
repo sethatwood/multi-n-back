@@ -32,6 +32,14 @@
     <div class="mt-5">
       <p :class="scoreClass">Score: {{ gameStore.score }}</p>
     </div>
+    <div class="instructions text-center mt-8 px-4">
+      <h2 class="text-xl font-semibold">How to Play</h2>
+      <p class="text-sm mt-2">
+        Click the buttons (Position, Color, Shape) that match the stimuli you saw <strong>{{ gameStore.nBack }}</strong> turns ago.
+        Correct responses increase your score, incorrect responses decrease it.
+        Aim to remember and match each attribute (position, color, shape) as it appears.
+      </p>
+    </div>
   </div>
 </template>
 
