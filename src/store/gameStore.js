@@ -22,17 +22,22 @@ export const useGameStore = defineStore('game', {
   }),
   actions: {
     setNewStimulus() {
-      // Reset response locks for the new turn
       this.respondedThisTurn = {
         position: false,
         color: false,
         shape: false,
       };
+
+      const positions = ['left', 'center', 'right']; // Updated positions
+      const colors = ['purple', 'green', 'blue']; // Updated colors
+      const shapes = ['circle', 'square', 'triangle']; // Updated shapes
+
       const newStimulus = {
-        position: Math.random() < 0.5 ? 'left' : 'right',
-        color: Math.random() < 0.5 ? 'purple' : 'green',
-        shape: Math.random() < 0.5 ? 'circle' : 'square',
+        position: positions[Math.floor(Math.random() * positions.length)],
+        color: colors[Math.floor(Math.random() * colors.length)],
+        shape: shapes[Math.floor(Math.random() * shapes.length)],
       };
+
       this.currentStimulus = newStimulus;
       this.stimulusHistory.push(newStimulus);
       console.log("New Stimulus:", newStimulus);
