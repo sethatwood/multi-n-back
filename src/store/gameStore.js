@@ -14,9 +14,20 @@ export const useGameStore = defineStore('game', {
     stimulusHistory: [],
     timer: null,
     flashBorder: false,
+    respondedThisTurn: {
+      position: false,
+      color: false,
+      shape: false,
+    },
   }),
   actions: {
     setNewStimulus() {
+      // Reset response locks for the new turn
+      this.respondedThisTurn = {
+        position: false,
+        color: false,
+        shape: false,
+      };
       const newStimulus = {
         position: Math.random() < 0.5 ? 'left' : 'right',
         color: Math.random() < 0.5 ? 'purple' : 'green',
@@ -24,29 +35,45 @@ export const useGameStore = defineStore('game', {
       };
       this.currentStimulus = newStimulus;
       this.stimulusHistory.push(newStimulus);
+      console.log("New Stimulus:", newStimulus);
       this.flashBorder = true;
       setTimeout(() => {
         this.flashBorder = false;
       }, 300);
     },
     respondToStimulus(stimulusType) {
-      const nBackIndex = this.stimulusHistory.length - this.nBack;
+      console.log("Responding to stimulus type:", stimulusType);
+      const nBackIndex = this.stimulusHistory.length - this.nBack - 1;
+      console.log("nBackIndex:", nBackIndex);
+
       if (nBackIndex >= 0) {
         const nBackStimulus = this.stimulusHistory[nBackIndex];
+        console.log("Current Stimulus:", this.currentStimulus);
+        console.log("N-Back Stimulus:", nBackStimulus);
 
-        // Check if the stimulus type matches the one from N-Back turns ago
-        if (stimulusType === 'position' && this.currentStimulus.position === nBackStimulus.position ||
+        const isCorrect = (
+          stimulusType === 'position' && this.currentStimulus.position === nBackStimulus.position ||
           stimulusType === 'color' && this.currentStimulus.color === nBackStimulus.color ||
-          stimulusType === 'shape' && this.currentStimulus.shape === nBackStimulus.shape) {
+          stimulusType === 'shape' && this.currentStimulus.shape === nBackStimulus.shape
+        );
+
+        console.log("Is response correct:", isCorrect);
+
+        if (isCorrect) {
           this.score += 1;
-          console.log("Correct response. Score:", this.score);
+          console.log("Correct response. Score incremented to:", this.score);
         } else {
           this.score -= 1;
-          console.log("Incorrect response. Score:", this.score);
+          console.log("Incorrect response. Score decremented to:", this.score);
         }
+      } else {
+        console.log("Not enough turns have passed to respond.");
       }
+      // Mark this stimulus type as responded for this turn
+      this.respondedThisTurn[stimulusType] = true;
     },
     startGame() {
+      console.log("Starting game");
       this.setNewStimulus();
       this.timer = setInterval(() => {
         if (this.timeLeft > 0) {
@@ -60,6 +87,7 @@ export const useGameStore = defineStore('game', {
     stopGame() {
       clearInterval(this.timer);
       this.timer = null;
+      console.log("Game stopped");
     },
   },
 });

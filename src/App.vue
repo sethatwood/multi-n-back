@@ -11,17 +11,20 @@
     />
     <div>
       <button
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-2"
+        :disabled="gameStore.respondedThisTurn.position"
+        :class="buttonClass(gameStore.respondedThisTurn.position)"
         @click="respond('position')">
         Position
       </button>
       <button
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-2"
+        :disabled="gameStore.respondedThisTurn.color"
+        :class="buttonClass(gameStore.respondedThisTurn.color)"
         @click="respond('color')">
         Color
       </button>
       <button
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-2"
+        :disabled="gameStore.respondedThisTurn.shape"
+        :class="buttonClass(gameStore.respondedThisTurn.shape)"
         @click="respond('shape')">
         Shape
       </button>
@@ -57,7 +60,13 @@ export default {
       gameStore.respondToStimulus(stimulusType);
     };
 
-    return { gameStore, respond };
+    const buttonClass = (isDisabled) => {
+      return `font-bold py-2 px-4 rounded m-2 ${
+        isDisabled ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-700'
+      }`;
+    };
+
+    return { gameStore, respond, buttonClass };
   },
 };
 </script>
