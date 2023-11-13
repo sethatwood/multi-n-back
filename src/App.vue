@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto px-4 py-5 text-center">
+  <div class="container mx-auto px-4 py-5 text-center text-white bg-slate-700">
     <h1 class="text-2xl font-bold mb-5">Poly N-Back Game</h1>
     <div class="mb-5">Time Left: {{ gameStore.timeLeft }}s</div>
     <Stimulus
@@ -26,6 +26,9 @@
         Shape
       </button>
     </div>
+    <div class="mt-5">
+      <p class="text-lg font-medium text-center">Score: {{ gameStore.score }}</p>
+    </div>
   </div>
 </template>
 
@@ -44,18 +47,14 @@ export default {
 
     onMounted(() => {
       gameStore.startGame();
-      console.log("Component mounted, game started");
     });
 
     onUnmounted(() => {
       gameStore.stopGame();
-      console.log("Component unmounted, game stopped");
     });
 
     const respond = (stimulusType) => {
-      console.log("Response to stimulus:", stimulusType);
-      // Handle the player's response here
-      // Compare the response with the stimulus from N turns ago
+      gameStore.respondToStimulus(stimulusType);
     };
 
     return { gameStore, respond };

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 
 export const useGameStore = defineStore('game', {
   state: () => ({
+    nBack: 2,
     score: 0,
     level: 1,
     timeLeft: 5,
@@ -10,17 +11,12 @@ export const useGameStore = defineStore('game', {
       color: 'purple',
       shape: 'circle'
     },
-    stimulusHistory: [], // Keep track of past stimuli
+    stimulusHistory: [],
     timer: null,
     flashBorder: false,
   }),
   actions: {
-    incrementScore() {
-      this.score += 1;
-      console.log("Score incremented:", this.score);
-    },
     setNewStimulus() {
-      // Logic to randomly set position, color, and shape
       const newStimulus = {
         position: Math.random() < 0.5 ? 'left' : 'right',
         color: Math.random() < 0.5 ? 'purple' : 'green',
@@ -28,12 +24,27 @@ export const useGameStore = defineStore('game', {
       };
       this.currentStimulus = newStimulus;
       this.stimulusHistory.push(newStimulus);
-      console.log("New Stimulus set:", this.currentStimulus);
       this.flashBorder = true;
-      // Reset flashBorder after a short delay
       setTimeout(() => {
         this.flashBorder = false;
-      }, 300); // delay can be adjusted
+      }, 300);
+    },
+    respondToStimulus(stimulusType) {
+      const nBackIndex = this.stimulusHistory.length - this.nBack;
+      if (nBackIndex >= 0) {
+        const nBackStimulus = this.stimulusHistory[nBackIndex];
+
+        // Check if the stimulus type matches the one from N-Back turns ago
+        if (stimulusType === 'position' && this.currentStimulus.position === nBackStimulus.position ||
+          stimulusType === 'color' && this.currentStimulus.color === nBackStimulus.color ||
+          stimulusType === 'shape' && this.currentStimulus.shape === nBackStimulus.shape) {
+          this.score += 1;
+          console.log("Correct response. Score:", this.score);
+        } else {
+          this.score -= 1;
+          console.log("Incorrect response. Score:", this.score);
+        }
+      }
     },
     startGame() {
       this.setNewStimulus();
@@ -45,12 +56,10 @@ export const useGameStore = defineStore('game', {
           this.setNewStimulus();
         }
       }, 1000);
-      console.log("Game started");
     },
     stopGame() {
       clearInterval(this.timer);
       this.timer = null;
-      console.log("Game stopped");
     },
   },
 });
