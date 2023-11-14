@@ -164,6 +164,7 @@ export const useGameStore = defineStore('game', {
       this.timeLeft = 5;
       this.previousPotentialCorrectAnswers = 0;
       this.potentialCorrectAnswers = 0;
+      this.stimulusHistory = [];
       console.log("Game stopped");
     },
   },
