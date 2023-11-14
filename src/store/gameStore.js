@@ -21,6 +21,7 @@ export const useGameStore = defineStore('game', {
     },
     incorrectResponses: 0,
     potentialCorrectAnswers: 0,
+    previousPotentialCorrectAnswers: 0,
     highScore: Number(localStorage.getItem('highScore')) || 0,
     highScoreData: JSON.parse(localStorage.getItem('highScoreData')) || { score: 0, potentialCorrectAnswers: 0 },
     isDeterministic: false,
@@ -51,6 +52,8 @@ export const useGameStore = defineStore('game', {
         shape: false,
       };
 
+      this.potentialCorrectAnswers = this.previousPotentialCorrectAnswers;
+
       if (this.isDeterministic) {
         // Use deterministic stimuli
         this.currentStimulus = this.deterministicStimuli[this.deterministicIndex];
@@ -77,7 +80,7 @@ export const useGameStore = defineStore('game', {
         potentialMatches += nBackStimulus.color === this.currentStimulus.color ? 1 : 0;
         potentialMatches += nBackStimulus.shape === this.currentStimulus.shape ? 1 : 0;
 
-        this.potentialCorrectAnswers += potentialMatches;
+        this.previousPotentialCorrectAnswers += potentialMatches;
       }
 
       this.stimulusHistory.push({ ...this.currentStimulus });
