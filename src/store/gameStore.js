@@ -91,7 +91,9 @@ export const useGameStore = defineStore('game', {
       }, 300);
     },
     toggleDeterministicMode() {
+      this.deterministicIndex = 0;
       this.isDeterministic = !this.isDeterministic;
+      console.log("Deterministic mode:", this.isDeterministic);
     },
     togglePause() {
       this.isPaused = !this.isPaused;
@@ -159,6 +161,9 @@ export const useGameStore = defineStore('game', {
     stopGame() {
       clearInterval(this.timer);
       this.timer = null;
+      this.timeLeft = 5;
+      this.previousPotentialCorrectAnswers = 0;
+      this.potentialCorrectAnswers = 0;
       console.log("Game stopped");
     },
   },

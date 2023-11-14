@@ -116,6 +116,8 @@ export default {
 
     const toggleDeterministicMode = () => {
       gameStore.toggleDeterministicMode();
+      gameStore.stopGame();
+      gameStore.startGame();
     };
 
     const togglePause = () => {
