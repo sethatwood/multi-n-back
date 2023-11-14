@@ -92,6 +92,20 @@
     <button @click="togglePause" class="m-2 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
       {{ gameStore.isPaused ? 'Resume' : 'Pause' }} Game
     </button>
+    <div
+      v-if="gameStore.isDeterministic"
+      class="mt-5 text-center text-sm"
+    >
+      <div v-for="stimulus, index in gameStore.deterministicStimuli" :key="index" class="mt-1">
+          {{ gameStore.deterministicIndex - 1 === index ? '->' : '' }}
+          {{ stimulus.position }}
+          •
+          <span :class="colorClass(stimulus.color)">{{ stimulus.color }}</span>
+          •
+          {{ stimulus.shape }}
+          {{ gameStore.deterministicIndex - 1 === index ? '<-' : '' }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -157,6 +171,15 @@ export default {
       return Math.round((score / total) * 100);
     };
 
+    const colorClass = (color) => {
+      switch (color) {
+        case 'purple': return 'text-purple-500';
+        case 'green': return 'text-green-500';
+        case 'blue': return 'text-blue-500';
+        default: return '';
+      }
+    };
+
     return {
       gameStore,
       respond,
@@ -167,6 +190,7 @@ export default {
       calculateAccuracy,
       toggleDeterministicMode,
       togglePause,
+      colorClass,
     };
   },
 };
