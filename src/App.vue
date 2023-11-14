@@ -34,11 +34,10 @@
       </div>
     </div>
   </div>
-  <div class="container mx-auto px-4 py-5 text-center text-white bg-slate-700">
-    <h1 class="text-2xl font-bold mb-5">Poly N-Back</h1>
+  <div class="container mx-auto px-4 py-12 text-center text-white bg-slate-700">
     <div class="mb-5">
       <p class="text-sm uppercase text-red-500">Strikes: {{ gameStore.incorrectResponses }}</p>
-      <p class="text-xl font-bold">{{ gameStore.timeLeft }}</p>
+      <p class="text-3xl font-bold">{{ gameStore.timeLeft }}</p>
     </div>
     <Stimulus
       class="mb-5"
