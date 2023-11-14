@@ -27,10 +27,18 @@ export const useGameStore = defineStore('game', {
     isPaused: false,
     deterministicIndex: 0,
     deterministicStimuli: [
-      { position: 'left', color: 'purple', shape: 'circle' },
-      { position: 'center', color: 'green', shape: 'square' },
-      { position: 'right', color: 'blue', shape: 'triangle' },
-      // Add more predefined stimuli as needed
+      { position: 'left', color: 'purple', shape: 'circle' }, // no match
+      { position: 'center', color: 'blue', shape: 'square' }, // no match
+      { position: 'left', color: 'blue', shape: 'triangle' }, // position match
+      { position: 'right', color: 'blue', shape: 'circle' }, // color match
+      { position: 'right', color: 'purple', shape: 'triangle' }, // shape match
+      { position: 'left', color: 'purple', shape: 'square' }, // no match
+      { position: 'center', color: 'purple', shape: 'triangle' }, // color, shape match
+      { position: 'center', color: 'green', shape: 'circle' }, // no match
+      { position: 'right', color: 'blue', shape: 'square' }, // no match
+      { position: 'center', color: 'green', shape: 'circle' }, // position, color, shape match
+      { position: 'center', color: 'blue', shape: 'triangle' }, // color match
+      { position: 'right', color: 'green', shape: 'triangle' }, // color match
     ],
   }),
   actions: {
@@ -73,7 +81,7 @@ export const useGameStore = defineStore('game', {
       }
 
       this.stimulusHistory.push({ ...this.currentStimulus });
-      console.log("New Stimulus:", this.currentStimulus);
+      console.log("New Stimulus:", { ...this.currentStimulus });
       this.flashBorder = true;
       setTimeout(() => {
         this.flashBorder = false;
