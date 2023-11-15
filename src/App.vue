@@ -47,32 +47,35 @@
       :emoji="gameStore.currentStimulus.emoji"
       :flashBorder="gameStore.flashBorder"
     />
-    <div>
+    <div class="grid grid-cols-2 gap-3">
       <button
         :disabled="gameStore.respondedThisTurn.position"
         :class="buttonClass(gameStore.respondedThisTurn.position)"
-        @click="respond('position')">
+        @click="respond('position')"
+        class="w-full">
         Position
       </button>
       <button
         :disabled="gameStore.respondedThisTurn.color"
         :class="buttonClass(gameStore.respondedThisTurn.color)"
-        @click="respond('color')">
+        @click="respond('color')"
+        class="w-full">
         Color
       </button>
       <button
         :disabled="gameStore.respondedThisTurn.shape"
         :class="buttonClass(gameStore.respondedThisTurn.shape)"
-        @click="respond('shape')">
+        @click="respond('shape')"
+        class="w-full">
         Shape
       </button>
       <button
-      :disabled="gameStore.respondedThisTurn.emoji"
-      :class="buttonClass(gameStore.respondedThisTurn.emoji)"
-      @click="respond('emoji')"
-    >
-      Emoji
-    </button>
+        :disabled="gameStore.respondedThisTurn.emoji"
+        :class="buttonClass(gameStore.respondedThisTurn.emoji)"
+        @click="respond('emoji')"
+        class="w-full">
+        Emoji
+      </button>
     </div>
     <div class="mt-5 text-center">
       <p class="text-lg font-medium">
@@ -156,7 +159,7 @@ export default {
     };
 
     const buttonClass = (isDisabled) => {
-      return `font-bold py-2 px-4 rounded m-2 ${
+      return `font-bold p-4 rounded ${
         isDisabled ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-700'
       }`;
     };
