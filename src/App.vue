@@ -1,6 +1,6 @@
 <template>
   <div v-if="showModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto" id="howToPlayModal">
-    <div class="relative top-4 mx-auto p-5 border container shadow-lg rounded-md bg-white">
+    <div class="relative mx-auto p-5 border container shadow-lg rounded-md bg-white">
       <div class="instructions mt-2 px-4">
         <img src="/logo.png" class="rounded-2xl" style="width: 180px; height: 180px; object-fit: contain;"/>
         <h2 class="text-xl font-semibold mt-3">Welcome to Poly N-Back!</h2>
@@ -34,7 +34,7 @@
       </div>
     </div>
   </div>
-  <div class="container mx-auto px-4 py-12 text-center text-white bg-slate-700">
+  <div v-else class="container mx-auto px-4 py-12 text-center text-white bg-slate-800">
     <div class="mb-5">
       <p class="text-sm uppercase text-red-500">Strikes: {{ gameStore.incorrectResponses }}</p>
       <p class="text-3xl font-bold">{{ gameStore.timeLeft }}</p>
@@ -44,6 +44,7 @@
       :position="gameStore.currentStimulus.position"
       :color="gameStore.currentStimulus.color"
       :shape="gameStore.currentStimulus.shape"
+      :emoji="gameStore.currentStimulus.emoji"
       :flashBorder="gameStore.flashBorder"
     />
     <div>
@@ -65,6 +66,13 @@
         @click="respond('shape')">
         Shape
       </button>
+      <button
+      :disabled="gameStore.respondedThisTurn.emoji"
+      :class="buttonClass(gameStore.respondedThisTurn.emoji)"
+      @click="respond('emoji')"
+    >
+      Emoji
+    </button>
     </div>
     <div class="mt-5 text-center">
       <p class="text-lg font-medium">
@@ -102,6 +110,8 @@
           <span :class="colorClass(stimulus.color)">{{ stimulus.color }}</span>
           •
           {{ stimulus.shape }}
+          •
+          {{ stimulus.emoji }}
           {{ gameStore.deterministicIndex - 1 === index ? '<-' : '' }}
       </div>
     </div>

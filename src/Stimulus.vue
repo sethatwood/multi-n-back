@@ -1,24 +1,14 @@
 <template>
   <div class="flex justify-center space-x-2">
-    <!-- Left Cell -->
-    <div :class="[cellClass, 'w-28 h-28 bg-slate-900 rounded-md flex items-center justify-center']">
-      <template v-if="position === 'left'">
+    <!-- Cells -->
+    <div v-for="cellPosition in ['left', 'center', 'right']" :key="cellPosition"
+         :class="[cellClass, 'w-28 h-28 bg-slate-900 rounded-md flex items-center justify-center relative']">
+      <template v-if="position === cellPosition">
         <div v-if="shape !== 'triangle'" :class="[colorClass, shapeClass]"></div>
-        <span v-else :class="colorClass" class="triangle">&#9650;</span>
-      </template>
-    </div>
-    <!-- Center Cell -->
-    <div :class="[cellClass, 'w-28 h-28 bg-slate-900 rounded-md flex items-center justify-center']">
-      <template v-if="position === 'center'">
-        <div v-if="shape !== 'triangle'" :class="[colorClass, shapeClass]"></div>
-        <span v-else :class="colorClass" class="triangle">&#9650;</span>
-      </template>
-    </div>
-    <!-- Right Cell -->
-    <div :class="[cellClass, 'w-28 h-28 bg-slate-900 rounded-md flex items-center justify-center']">
-      <template v-if="position === 'right'">
-        <div v-if="shape !== 'triangle'" :class="[colorClass, shapeClass]"></div>
-        <span v-else :class="colorClass" class="triangle">&#9650;</span>
+        <div v-if="shape === 'triangle'" :class="['triangle', colorClass]"></div>
+        <span v-if="gameStore.currentStimulus.emoji === 'fire'" class="emoji">🔥</span>
+        <span v-if="gameStore.currentStimulus.emoji === 'ice'" class="emoji">🧊</span>
+        <span v-if="gameStore.currentStimulus.emoji === 'flower'" class="emoji">🌸</span>
       </template>
     </div>
   </div>
@@ -32,7 +22,8 @@ export default {
   props: {
     position: String,
     color: String,
-    shape: String
+    shape: String,
+    emoji: String,
   },
   setup() {
     const gameStore = useGameStore();
@@ -58,15 +49,30 @@ export default {
       }
     },
     cellClass() {
-      return this.gameStore.flashBorder ? 'border border-slate-500' : '';
+      return this.gameStore.flashBorder ? 'border border-slate-700' : '';
     },
   },
 };
 </script>
 
 <style>
-.triangle {
-  font-size: 7rem;
+/* Emoji styling */
+.emoji {
+  font-size: 3rem;
+  position: absolute;
   line-height: 1;
+}
+
+/* Triangle styling using CSS */
+.triangle {
+  width: 0;
+  height: 0;
+  border-left: 2.5rem solid transparent;
+  border-right: 2.5rem solid transparent;
+  border-bottom: 5rem solid currentColor; /* Uses the current text color */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>
