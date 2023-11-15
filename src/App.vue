@@ -60,7 +60,7 @@
         Score: <span :class="scoreClass">{{ gameStore.score }}</span>/{{ gameStore.potentialCorrectAnswers }}
         ({{ calculateAccuracy(gameStore.score, gameStore.potentialCorrectAnswers) }}%)
       </p>
-      <p class="text-sm uppercase text-green-500">
+      <p class="text-sm uppercase text-green-700">
         High Score: {{ gameStore.highScoreData.score }}/{{ gameStore.highScoreData.potentialCorrectAnswers }}
         ({{ calculateAccuracy(gameStore.highScoreData.score, gameStore.highScoreData.potentialCorrectAnswers) }}%)
       </p>
@@ -72,13 +72,16 @@
     </div>
     <!-- Buttons to toggle deterministic mode and pause the game -->
     <button
+      @click="togglePause"
+      class="mx-1 mt-6 bg-gray-700 hover:bg-gray-900 text-gray-400 py-1 px-2 rounded"
+    >
+      {{ gameStore.isPaused ? 'Resume' : 'Pause' }} Game
+    </button>
+    <button
       @click="toggleDeterministicMode"
-      class="m-2 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+      class="mx-1 my-1 bg-gray-700 hover:bg-gray-900 text-gray-400 py-1 px-2 rounded"
     >
       {{ gameStore.isDeterministic ? 'Disable' : 'Enable' }} Deterministic
-    </button>
-    <button @click="togglePause" class="m-2 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-      {{ gameStore.isPaused ? 'Resume' : 'Pause' }} Game
     </button>
     <div
       v-if="gameStore.isDeterministic"
