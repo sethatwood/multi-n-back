@@ -2,7 +2,7 @@
   <div class="flex justify-center space-x-2">
     <!-- Cells -->
     <div v-for="cellPosition in ['left', 'center', 'right']" :key="cellPosition"
-         :class="[cellClass, 'w-28 h-28 bg-slate-900 rounded-md flex items-center justify-center relative']">
+         :class="[cellClass, 'flex-1 h-32 bg-slate-900 rounded-md flex items-center justify-center relative']">
       <template v-if="position === cellPosition">
         <div v-if="shape !== 'triangle'" :class="[colorClass, shapeClass]"></div>
         <div v-if="shape === 'triangle'" :class="['triangle', colorClass]"></div>
@@ -56,20 +56,17 @@ export default {
 </script>
 
 <style>
-/* Emoji styling */
 .emoji {
   font-size: 3rem;
   position: absolute;
   line-height: 1;
 }
-
-/* Triangle styling using CSS */
 .triangle {
   width: 0;
   height: 0;
   border-left: 2.5rem solid transparent;
   border-right: 2.5rem solid transparent;
-  border-bottom: 5rem solid currentColor; /* Uses the current text color */
+  border-bottom: 5rem solid currentColor;
   position: absolute;
   top: 50%;
   left: 50%;

@@ -34,7 +34,7 @@
       </div>
     </div>
   </div>
-  <div v-else class="container mx-auto px-4 py-12 text-center text-white bg-slate-800">
+  <div v-else class="max-w-md mx-auto px-4 py-12 text-center text-white bg-slate-800">
     <div class="mb-5">
       <p class="text-sm uppercase text-red-500">Strikes: {{ gameStore.incorrectResponses }}</p>
       <p class="text-3xl font-bold">{{ gameStore.timeLeft }}</p>
