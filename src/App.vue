@@ -48,33 +48,11 @@
       :flashBorder="gameStore.flashBorder"
     />
     <div class="grid grid-cols-2 gap-3">
-      <button
-        :disabled="gameStore.respondedThisTurn.position"
-        :class="buttonClass(gameStore.respondedThisTurn.position)"
-        @click="respond('position')"
-        class="w-full">
-        Position
-      </button>
-      <button
-        :disabled="gameStore.respondedThisTurn.color"
-        :class="buttonClass(gameStore.respondedThisTurn.color)"
-        @click="respond('color')"
-        class="w-full">
-        Color
-      </button>
-      <button
-        :disabled="gameStore.respondedThisTurn.shape"
-        :class="buttonClass(gameStore.respondedThisTurn.shape)"
-        @click="respond('shape')"
-        class="w-full">
-        Shape
-      </button>
-      <button
-        :disabled="gameStore.respondedThisTurn.emoji"
-        :class="buttonClass(gameStore.respondedThisTurn.emoji)"
-        @click="respond('emoji')"
-        class="w-full">
-        Emoji
+      <button v-for="button in responseButtons" :key="button.type" class="w-full"
+        :disabled="gameStore.respondedThisTurn[button.type]"
+        :class="buttonClass(gameStore.respondedThisTurn[button.type])"
+        @click="respond(button.type)">
+        {{ button.label }}
       </button>
     </div>
     <div class="mt-5 text-center">
@@ -192,6 +170,13 @@ export default {
       }
     };
 
+    const responseButtons = [
+      { type: 'position', label: 'Position' },
+      { type: 'color', label: 'Color' },
+      { type: 'shape', label: 'Shape' },
+      { type: 'emoji', label: 'Emoji' }
+    ];
+
     return {
       gameStore,
       respond,
@@ -203,6 +188,7 @@ export default {
       toggleDeterministicMode,
       togglePause,
       colorClass,
+      responseButtons,
     };
   },
 };
