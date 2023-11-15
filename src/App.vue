@@ -12,8 +12,11 @@
       </div>
     </div>
   </div>
-  <div v-else class="max-w-md mx-auto px-4 py-12 text-center text-white bg-slate-800">
-    <div class="mb-5">
+  <div v-else class="max-w-md mx-auto px-4 text-center uppercase text-white bg-slate-800">
+    <div v-if="showInstructionMessage" class="my-6 text-center text-gray-400 text-sm cursor-pointer" @click="dismissInstructionMessage">
+      &#x24E7; Match attributes from {{ gameStore.nBack }} steps back.
+    </div>
+    <div class="my-12">
       <p class="text-sm uppercase text-red-500">Strikes: {{ gameStore.incorrectResponses }}</p>
       <p class="text-3xl font-bold">{{ gameStore.timeLeft }}</p>
     </div>
@@ -92,6 +95,12 @@ export default {
   setup() {
     const gameStore = useGameStore();
     const showModal = ref(true);
+    const showInstructionMessage = ref(!localStorage.getItem('instructionMessageDismissed'));
+
+    const dismissInstructionMessage = () => {
+      showInstructionMessage.value = false;
+      localStorage.setItem('instructionMessageDismissed', 'true');
+    }
 
     const startGame = () => {
       showModal.value = false;
@@ -173,6 +182,8 @@ export default {
       toggleGame,
       colorClass,
       responseButtons,
+      showInstructionMessage,
+      dismissInstructionMessage,
     };
   },
 };
