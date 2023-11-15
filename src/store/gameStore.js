@@ -6,12 +6,7 @@ export const useGameStore = defineStore('game', {
     score: 0,
     level: 1,
     timeLeft: 5,
-    currentStimulus: {
-      position: 'left',
-      color: 'purple',
-      shape: 'circle',
-      emoji: 'fire',
-    },
+    currentStimulus: {},
     stimulusHistory: [],
     timer: null,
     flashBorder: false,
@@ -44,8 +39,21 @@ export const useGameStore = defineStore('game', {
     ],
   }),
   actions: {
+    generateRandomStimulus() {
+      const positions = ['left', 'center', 'right'];
+      const colors = ['purple', 'green', 'blue'];
+      const shapes = ['circle', 'square', 'triangle'];
+      const emojis = ['fire', 'ice', 'flower'];
+
+      return {
+        position: positions[Math.floor(Math.random() * positions.length)],
+        color: colors[Math.floor(Math.random() * colors.length)],
+        shape: shapes[Math.floor(Math.random() * shapes.length)],
+        emoji: emojis[Math.floor(Math.random() * emojis.length)],
+      };
+    },
     setNewStimulus() {
-      if (this.isPaused) return; // Skip setting new stimulus if paused
+      if (this.isPaused) return;
 
       this.respondedThisTurn = {
         position: false,
@@ -56,22 +64,10 @@ export const useGameStore = defineStore('game', {
       this.potentialCorrectAnswers = this.previousPotentialCorrectAnswers;
 
       if (this.isDeterministic) {
-        // Use deterministic stimuli
         this.currentStimulus = this.deterministicStimuli[this.deterministicIndex];
         this.deterministicIndex = (this.deterministicIndex + 1) % this.deterministicStimuli.length;
       } else {
-        // Regular random stimulus logic
-        const positions = ['left', 'center', 'right'];
-        const colors = ['purple', 'green', 'blue'];
-        const shapes = ['circle', 'square', 'triangle'];
-        const emojis = ['fire', 'ice', 'flower'];
-
-        this.currentStimulus = {
-          position: positions[Math.floor(Math.random() * positions.length)],
-          color: colors[Math.floor(Math.random() * colors.length)],
-          shape: shapes[Math.floor(Math.random() * shapes.length)],
-          emoji: emojis[Math.floor(Math.random() * emojis.length)],
-        };
+        this.currentStimulus = this.generateRandomStimulus();
       }
 
       // Increase potential correct answers after enough history is available
@@ -82,6 +78,7 @@ export const useGameStore = defineStore('game', {
         potentialMatches += nBackStimulus.position === this.currentStimulus.position ? 1 : 0;
         potentialMatches += nBackStimulus.color === this.currentStimulus.color ? 1 : 0;
         potentialMatches += nBackStimulus.shape === this.currentStimulus.shape ? 1 : 0;
+        potentialMatches += nBackStimulus.emoji === this.currentStimulus.emoji ? 1 : 0;
 
         this.previousPotentialCorrectAnswers += potentialMatches;
       }
@@ -94,17 +91,39 @@ export const useGameStore = defineStore('game', {
       }, 300);
     },
     toggleDeterministicMode() {
-      this.deterministicIndex = 0;
       this.isDeterministic = !this.isDeterministic;
       console.log("Deterministic mode:", this.isDeterministic);
+      this.timeLeft = 5;
+      this.startGame();
     },
-    togglePause() {
-      this.isPaused = !this.isPaused;
-      if (this.isPaused) {
-        clearInterval(this.timer);
-      } else {
-        this.startGame();
-      }
+    resetGameState() {
+      clearInterval(this.timer);
+      this.score = 0;
+      this.incorrectResponses = 0;
+      this.timeLeft = 5;
+      this.isPaused = false;
+      this.stimulusHistory = [];
+      this.potentialCorrectAnswers = 0;
+      this.previousPotentialCorrectAnswers = 0;
+      this.respondedThisTurn = { position: false, color: false, shape: false, emoji: false };
+      this.deterministicIndex = 0;
+      this.setNewStimulus();
+    },
+    startGame() {
+      this.resetGameState();
+      this.timer = setInterval(() => {
+          if (this.timeLeft > 1) {
+              this.timeLeft -= 1; // Decrement timeLeft
+          } else {
+              this.setNewStimulus(); // Set new stimulus and reset the timer
+              this.timeLeft = 5; // Reset the timer
+          }
+      }, 1000);
+      console.log("Starting game");
+    },
+    stopGame() {
+      clearInterval(this.timer);
+      this.isPaused = true;
     },
     respondToStimulus(stimulusType) {
       console.log("Responding to stimulus type:", stimulusType);
@@ -147,29 +166,6 @@ export const useGameStore = defineStore('game', {
       }
       // Mark this stimulus type as responded for this turn
       this.respondedThisTurn[stimulusType] = true;
-    },
-    startGame() {
-      this.score = 0;
-      this.incorrectResponses = 0;
-      console.log("Starting game");
-      this.setNewStimulus();
-      this.timer = setInterval(() => {
-        if (this.timeLeft > 0) {
-          this.timeLeft--;
-        } else {
-          this.timeLeft = 5;
-          this.setNewStimulus();
-        }
-      }, 1000);
-    },
-    stopGame() {
-      clearInterval(this.timer);
-      this.timer = null;
-      this.timeLeft = 5;
-      this.previousPotentialCorrectAnswers = 0;
-      this.potentialCorrectAnswers = 0;
-      this.stimulusHistory = [];
-      console.log("Game stopped");
     },
   },
 });

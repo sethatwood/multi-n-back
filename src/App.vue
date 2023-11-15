@@ -49,11 +49,8 @@
       </button>
     </div>
     <!-- Buttons to toggle deterministic mode and pause the game -->
-    <button
-      @click="togglePause"
-      class="mx-1 mt-6 bg-gray-700 hover:bg-gray-900 text-gray-400 py-1 px-2 rounded"
-    >
-      {{ gameStore.isPaused ? 'Resume' : 'Pause' }} Game
+    <button @click="toggleGame" class="mx-1 mt-6 bg-gray-700 hover:bg-gray-900 text-gray-400 py-1 px-2 rounded">
+      {{ gameStore.isPaused ? 'Start' : 'Stop' }} Game
     </button>
     <button
       @click="toggleDeterministicMode"
@@ -102,13 +99,17 @@ export default {
     };
 
     const toggleDeterministicMode = () => {
-      gameStore.toggleDeterministicMode();
       gameStore.stopGame();
+      gameStore.toggleDeterministicMode();
       gameStore.startGame();
     };
 
-    const togglePause = () => {
-      gameStore.togglePause();
+    const toggleGame = () => {
+      if (gameStore.isPaused) {
+        gameStore.startGame();
+      } else {
+        gameStore.stopGame();
+      }
     };
 
     onUnmounted(() => {
@@ -169,7 +170,7 @@ export default {
       scoreClass,
       calculateAccuracy,
       toggleDeterministicMode,
-      togglePause,
+      toggleGame,
       colorClass,
       responseButtons,
     };
