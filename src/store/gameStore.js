@@ -79,12 +79,20 @@ export const useGameStore = defineStore('game', {
         const nBackStimulus = this.stimulusHistory[this.stimulusHistory.length - this.nBack];
         let potentialMatches = 0;
 
-        potentialMatches += nBackStimulus.position === this.currentStimulus.position ? 1 : 0;
-        potentialMatches += nBackStimulus.color === this.currentStimulus.color ? 1 : 0;
-        potentialMatches += nBackStimulus.shape === this.currentStimulus.shape ? 1 : 0;
-        potentialMatches += nBackStimulus.emoji === this.currentStimulus.emoji ? 1 : 0;
+        const positionMatch = nBackStimulus.position === this.currentStimulus.position;
+        const colorMatch = nBackStimulus.color === this.currentStimulus.color;
+        const shapeMatch = nBackStimulus.shape === this.currentStimulus.shape;
+        const emojiMatch = nBackStimulus.emoji === this.currentStimulus.emoji;
+
+        potentialMatches += positionMatch ? 1 : 0;
+        potentialMatches += colorMatch ? 1 : 0;
+        potentialMatches += shapeMatch ? 1 : 0;
+        potentialMatches += emojiMatch ? 1 : 0;
 
         this.previousPotentialCorrectAnswers += potentialMatches;
+
+        console.log("Updated `previousPotentialCorrectAnswers`:", this.previousPotentialCorrectAnswers);
+        console.log("Potential match details:", { positionMatch, colorMatch, shapeMatch, emojiMatch });
       }
 
       this.stimulusHistory.push({ ...this.currentStimulus });
