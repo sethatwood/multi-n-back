@@ -3,7 +3,7 @@
     <div class="relative mx-auto p-5 border container shadow-lg rounded-md bg-white">
       <IntroContent :n-back="gameStore.nBack" />
       <div class="items-center px-4 py-3">
-        <button @click="startGame" class="mt-3 px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300">
+        <button @click="startGame" class="mt-3 p-4 text-lg bg-blue-900 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
           Start Game
         </button>
       </div>
@@ -14,14 +14,14 @@
   </div>
   <div v-else class="max-w-md mx-auto px-4 text-center uppercase text-white bg-slate-800">
     <div v-if="showInstructionMessage" class="my-6 text-center text-gray-400 text-sm cursor-pointer" @click="dismissInstructionMessage">
-      &#x24E7; Match attributes from {{ gameStore.nBack }} steps back.
+      &#x24E7; Match attributes from {{ gameStore.nBack }} steps back
     </div>
-    <div class="my-12">
+    <div class="mt-12 mb-3">
       <p class="text-md uppercase text-red-500">Strikes: {{ gameStore.incorrectResponses }}</p>
       <p class="text-3xl font-bold">{{ gameStore.timeLeft }}</p>
     </div>
     <Stimulus
-      class="mb-5"
+      class="mb-3"
       :position="gameStore.currentStimulus.position"
       :color="gameStore.currentStimulus.color"
       :shape="gameStore.currentStimulus.shape"
@@ -38,7 +38,7 @@
     </div>
     <div class="mt-5 text-center">
       <p class="text-xl">
-        <span class="text-xs">Score: </span>
+        <span class="text-xs text-gray-400">Score: </span>
         <span :class="scoreClass">{{ gameStore.score }}</span>
         <span class="text-sm text-gray-400">
           / {{ gameStore.potentialCorrectAnswers }} ({{ calculateAccuracy(gameStore.score, gameStore.potentialCorrectAnswers) }}%)
@@ -133,8 +133,8 @@ export default {
     };
 
     const buttonClass = (isDisabled) => {
-      return `font-bold p-4 rounded ${
-        isDisabled ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-700'
+      return `p-4 rounded text-lg ${
+        isDisabled ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-900 hover:bg-blue-800'
       }`;
     };
 
