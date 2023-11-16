@@ -18,7 +18,6 @@ export const useGameStore = defineStore('game', {
     incorrectResponses: 0,
     potentialCorrectAnswers: 0,
     previousPotentialCorrectAnswers: 0,
-    highScore: Number(localStorage.getItem('highScore')) || 0,
     highScoreData: JSON.parse(localStorage.getItem('highScoreData')) || { score: 0, potentialCorrectAnswers: 0 },
     isDeterministic: false,
     isPaused: false,
@@ -146,17 +145,17 @@ export const useGameStore = defineStore('game', {
 
         if (isCorrect) {
           this.score += 1;
-          if (this.score > this.highScoreData.score) {
-            this.highScoreData = {
-              score: this.score,
-              potentialCorrectAnswers: this.potentialCorrectAnswers
-            };
-            localStorage.setItem('highScoreData', JSON.stringify(this.highScoreData));
-          }
         } else {
           this.score -= 1;
           this.incorrectResponses += 1;
           if (this.incorrectResponses >= 3) {
+            if (this.score > this.highScoreData.score) {
+              this.highScoreData = {
+                score: this.score,
+                potentialCorrectAnswers: this.potentialCorrectAnswers
+              };
+              localStorage.setItem('highScoreData', JSON.stringify(this.highScoreData));
+            }
             this.stopGame();
             alert("Game over! You've reached 3 strikes."); // Consider replacing with a Tailwind modal
           }

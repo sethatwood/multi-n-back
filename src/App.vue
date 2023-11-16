@@ -17,7 +17,7 @@
       &#x24E7; Match attributes from {{ gameStore.nBack }} steps back.
     </div>
     <div class="my-12">
-      <p class="text-sm uppercase text-red-500">Strikes: {{ gameStore.incorrectResponses }}</p>
+      <p class="text-md uppercase text-red-500">Strikes: {{ gameStore.incorrectResponses }}</p>
       <p class="text-3xl font-bold">{{ gameStore.timeLeft }}</p>
     </div>
     <Stimulus
@@ -37,9 +37,12 @@
       </button>
     </div>
     <div class="mt-5 text-center">
-      <p class="text-lg font-medium">
-        Score: <span :class="scoreClass">{{ gameStore.score }}</span>/{{ gameStore.potentialCorrectAnswers }}
-        ({{ calculateAccuracy(gameStore.score, gameStore.potentialCorrectAnswers) }}%)
+      <p class="text-xl">
+        <span class="text-xs">Score: </span>
+        <span :class="scoreClass">{{ gameStore.score }}</span>
+        <span class="text-sm text-gray-400">
+          / {{ gameStore.potentialCorrectAnswers }} ({{ calculateAccuracy(gameStore.score, gameStore.potentialCorrectAnswers) }}%)
+        </span>
       </p>
       <p class="text-sm uppercase text-green-700">
         High Score: {{ gameStore.highScoreData.score }}/{{ gameStore.highScoreData.potentialCorrectAnswers }}
@@ -53,7 +56,7 @@
     </div>
     <!-- Buttons to toggle deterministic mode and pause the game -->
     <button @click="toggleGame" class="mx-1 mt-6 bg-gray-700 hover:bg-gray-900 text-gray-400 py-1 px-2 rounded">
-      {{ gameStore.isPaused ? 'Start' : 'Stop' }} Game
+      {{ gameStore.isPaused ? 'Start' : 'End' }} Game
     </button>
     <button
       @click="toggleDeterministicMode"
@@ -146,7 +149,7 @@ export default {
         ? 'text-green-500'
         : gameStore.score < previousScore.value
         ? 'text-red-500'
-        : 'text-lg font-medium';
+        : 'text-xl font-medium';
     });
 
     const calculateAccuracy = (score, total) => {
