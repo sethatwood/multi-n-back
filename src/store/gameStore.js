@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import stimulusSound from '../assets/stimulus.wav';
 
 export const useGameStore = defineStore('game', {
   state: () => ({
@@ -36,6 +37,7 @@ export const useGameStore = defineStore('game', {
       { position: 'center', color: 'blue', shape: 'triangle', emoji: 'ice' }, // color match
       { position: 'right', color: 'green', shape: 'triangle', emoji: 'flower' }, // color match
     ],
+    stimulusSound: new Audio(stimulusSound),
   }),
   actions: {
     generateRandomStimulus() {
@@ -98,6 +100,7 @@ export const useGameStore = defineStore('game', {
       this.stimulusHistory.push({ ...this.currentStimulus });
       console.log("Setting new stimulus:", { ...this.currentStimulus });
       this.flashBorder = true;
+      this.stimulusSound.play();
       setTimeout(() => {
         this.flashBorder = false;
       }, 300);
@@ -159,8 +162,10 @@ export const useGameStore = defineStore('game', {
 
         if (isCorrect) {
           this.score += 1;
+          // play sound
         } else {
           this.score -= 1;
+          //play sound
           this.incorrectResponses += 1;
           if (this.incorrectResponses >= 3) {
             if (this.score > this.highScoreData.score) {
