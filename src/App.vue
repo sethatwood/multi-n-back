@@ -101,27 +101,25 @@ export default {
     const showInstructionMessage = ref(!localStorage.getItem('instructionMessageDismissed'));
 
     const dismissInstructionMessage = () => {
+      console.log("Instruction message dismissed");
       showInstructionMessage.value = false;
       localStorage.setItem('instructionMessageDismissed', 'true');
     }
 
     const startGame = () => {
+      console.log("Start game button clicked");
       showModal.value = false;
       gameStore.startGame();
     };
 
     const toggleDeterministicMode = () => {
-      gameStore.stopGame();
+      console.log("Toggle deterministic mode");
       gameStore.toggleDeterministicMode();
-      gameStore.startGame();
     };
 
     const toggleGame = () => {
-      if (gameStore.isPaused) {
-        gameStore.startGame();
-      } else {
-        gameStore.stopGame();
-      }
+      console.log(gameStore.isPaused ? "Resuming game" : "Pausing game");
+      gameStore.isPaused ? gameStore.startGame() : gameStore.stopGame();
     };
 
     onUnmounted(() => {
@@ -129,6 +127,7 @@ export default {
     });
 
     const respond = (stimulusType) => {
+      console.log(`Responding to stimulus type: ${stimulusType}`);
       gameStore.respondToStimulus(stimulusType);
     };
 
@@ -141,6 +140,7 @@ export default {
     const previousScore = ref(gameStore.score);
 
     watch(() => gameStore.score, (newScore, oldScore) => {
+      console.log(`Score changed from ${oldScore} to ${newScore}`);
       previousScore.value = oldScore;
     });
 

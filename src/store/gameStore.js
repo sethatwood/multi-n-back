@@ -44,15 +44,20 @@ export const useGameStore = defineStore('game', {
       const shapes = ['circle', 'square', 'triangle'];
       const emojis = ['fire', 'ice', 'flower'];
 
-      return {
+      const stimulus = {
         position: positions[Math.floor(Math.random() * positions.length)],
         color: colors[Math.floor(Math.random() * colors.length)],
         shape: shapes[Math.floor(Math.random() * shapes.length)],
         emoji: emojis[Math.floor(Math.random() * emojis.length)],
       };
+      // console.log("Generated random stimulus:", stimulus);
+      return stimulus;
     },
     setNewStimulus() {
-      if (this.isPaused) return;
+      if (this.isPaused) {
+        console.log("Game is paused. Skipping setNewStimulus.");
+        return;
+      }
 
       this.respondedThisTurn = {
         position: false,
@@ -83,7 +88,7 @@ export const useGameStore = defineStore('game', {
       }
 
       this.stimulusHistory.push({ ...this.currentStimulus });
-      console.log("New Stimulus:", { ...this.currentStimulus });
+      console.log("Setting new stimulus:", { ...this.currentStimulus });
       this.flashBorder = true;
       setTimeout(() => {
         this.flashBorder = false;
@@ -91,11 +96,11 @@ export const useGameStore = defineStore('game', {
     },
     toggleDeterministicMode() {
       this.isDeterministic = !this.isDeterministic;
-      console.log("Deterministic mode:", this.isDeterministic);
-      this.timeLeft = 5;
+      console.log(`Deterministic mode toggled. Now: ${this.isDeterministic}`);
       this.startGame();
     },
     resetGameState() {
+      console.log("Resetting game state");
       clearInterval(this.timer);
       this.score = 0;
       this.incorrectResponses = 0;
@@ -109,30 +114,31 @@ export const useGameStore = defineStore('game', {
       this.setNewStimulus();
     },
     startGame() {
+      console.log("Starting game");
       this.resetGameState();
       this.timer = setInterval(() => {
-          if (this.timeLeft > 1) {
-              this.timeLeft -= 1; // Decrement timeLeft
-          } else {
-              this.setNewStimulus(); // Set new stimulus and reset the timer
-              this.timeLeft = 5; // Reset the timer
-          }
+        // console.log(`Timer tick. Time left: ${this.timeLeft}`);
+        if (this.timeLeft > 1) {
+            this.timeLeft -= 1;
+        } else {
+            this.setNewStimulus();
+            this.timeLeft = 5;
+        }
       }, 1000);
-      console.log("Starting game");
     },
     stopGame() {
+      console.log("Stopping game");
       clearInterval(this.timer);
       this.isPaused = true;
     },
     respondToStimulus(stimulusType) {
-      console.log("Responding to stimulus type:", stimulusType);
+      console.log(`Responding to stimulus: ${stimulusType}`);
       const nBackIndex = this.stimulusHistory.length - this.nBack - 1;
-      console.log("nBackIndex:", nBackIndex);
+      console.log(`nBackIndex: ${nBackIndex}`);
 
       if (nBackIndex >= 0) {
         const nBackStimulus = this.stimulusHistory[nBackIndex];
-        console.log("Current Stimulus:", this.currentStimulus);
-        console.log("N-Back Stimulus:", nBackStimulus);
+        console.log("Comparing current stimulus and n-back stimulus", {current: this.currentStimulus, nBack: nBackStimulus});
 
         const isCorrect = (
           stimulusType === 'position' && this.currentStimulus.position === nBackStimulus.position ||
@@ -160,10 +166,10 @@ export const useGameStore = defineStore('game', {
             alert("Game over! You've reached 3 strikes."); // Consider replacing with a Tailwind modal
           }
         }
+        console.log(`Response is ${isCorrect ? 'correct' : 'incorrect'}. Score: ${this.score}`);
       } else {
         console.log("Not enough turns have passed to respond.");
       }
-      // Mark this stimulus type as responded for this turn
       this.respondedThisTurn[stimulusType] = true;
     },
   },
