@@ -33,29 +33,29 @@
         {{ button.label }}
       </button>
     </div>
-    <div class="mt-5 text-center">
-      <p class="text-sm uppercase text-red-500">
+    <div class="text-center">
+      <p class="mt-4 text-sm uppercase text-red-500">
         <span class="text-lg font-bold">{{ gameStore.incorrectResponses }}</span> Strikes
       </p>
-      <p class="text-xl">
+      <p class="mt-1 text-xl">
         <span class="text-xs text-gray-400">Score: </span>
         <span :class="scoreClass">{{ gameStore.score }}</span>
         <span class="text-sm text-gray-400">
           / {{ gameStore.potentialCorrectAnswers }} ({{ calculateAccuracy(gameStore.score, gameStore.previousPotentialCorrectAnswers) }}%)
         </span>
       </p>
-      <p class="text-sm uppercase text-green-700">
+      <p class="mt-1 text-sm uppercase text-green-700">
         High Score: {{ gameStore.highScoreData.score }}/{{ gameStore.highScoreData.potentialCorrectAnswers }}
         ({{ calculateAccuracy(gameStore.highScoreData.score, gameStore.highScoreData.potentialCorrectAnswers) }}%)
       </p>
       <button v-if="gameStore.incorrectResponses >= 3"
               @click="startGame"
-              class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              class="mt-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
         Restart Game
       </button>
     </div>
     <!-- Buttons to toggle deterministic mode and pause the game -->
-    <button @click="toggleGame" class="mx-1 mt-6 bg-gray-700 hover:bg-gray-900 text-gray-400 py-1 px-2 rounded">
+    <button @click="toggleGame" class="mx-1 mt-5 bg-gray-700 hover:bg-gray-900 text-gray-400 py-1 px-2 rounded">
       {{ gameStore.isPaused ? 'Start' : 'End' }} Game
     </button>
     <button
