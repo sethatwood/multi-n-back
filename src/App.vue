@@ -68,13 +68,13 @@
     >
       <div v-for="stimulus, index in gameStore.deterministicStimuli" :key="index" class="mt-1">
           {{ gameStore.deterministicIndex - 1 === index ? '->' : '' }}
-          {{ stimulus.position }}
-          •
           <span :class="colorClass(stimulus.color)">{{ stimulus.color }}</span>
           •
-          {{ stimulus.shape }}
-          •
           {{ stimulus.emoji }}
+          •
+          {{ stimulus.position }}
+          •
+          {{ stimulus.shape }}
           {{ gameStore.deterministicIndex - 1 === index ? '<-' : '' }}
       </div>
     </div>
