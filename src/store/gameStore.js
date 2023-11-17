@@ -200,4 +200,10 @@ export const useGameStore = defineStore('game', {
       this.respondedThisTurn[stimulusType] = true;
     },
   },
+  getters: {
+    isEarlyInGame: (state) => {
+      const nBackIndex = state.stimulusHistory.length - state.nBack - 1;
+      return nBackIndex < 0;
+    },
+  },
 });

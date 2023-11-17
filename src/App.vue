@@ -27,8 +27,8 @@
     />
     <div class="grid grid-cols-2 gap-3">
       <button v-for="button in responseButtons" :key="button.type" class="w-full"
-        :disabled="gameStore.respondedThisTurn[button.type]"
-        :class="buttonClass(gameStore.respondedThisTurn[button.type])"
+        :disabled="gameStore.respondedThisTurn[button.type] || gameStore.isEarlyInGame"
+        :class="buttonClass(gameStore.respondedThisTurn[button.type], gameStore.isEarlyInGame)"
         @click="respond(button.type)">
         {{ button.label }}
       </button>
@@ -134,10 +134,12 @@ export default {
       gameStore.respondToStimulus(stimulusType);
     };
 
-    const buttonClass = (isDisabled) => {
-      return `p-4 rounded text-lg ${
-        isDisabled ? 'bg-gray-900' : 'bg-blue-800 hover:bg-blue-700'
-      }`;
+    const buttonClass = (isResponded, isEarlyInGame) => {
+      if (isResponded || isEarlyInGame) {
+        return 'p-4 rounded text-lg bg-gray-900';
+      } else {
+        return 'p-4 rounded text-lg bg-blue-800 hover:bg-blue-700';
+      }
     };
 
     const previousScore = ref(gameStore.score);
