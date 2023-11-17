@@ -12,8 +12,9 @@ export const useGameStore = defineStore('game', {
     timer: null,
     flashBorder: false,
     respondedThisTurn: {
-      position: false,
       color: false,
+      emoji: false,
+      position: false,
       shape: false,
     },
     incorrectResponses: 0,
@@ -24,33 +25,33 @@ export const useGameStore = defineStore('game', {
     isPaused: false,
     deterministicIndex: 0,
     deterministicStimuli: [
-      { position: 'left', color: 'purple', shape: 'circle', emoji: 'fire' }, // no match
-      { position: 'center', color: 'blue', shape: 'square', emoji: 'flower' }, // no match
-      { position: 'left', color: 'blue', shape: 'triangle', emoji: 'ice' }, // position match
-      { position: 'right', color: 'blue', shape: 'circle', emoji: 'fire' }, // color match
-      { position: 'right', color: 'purple', shape: 'triangle', emoji: 'ice' }, // shape, emoji match
-      { position: 'left', color: 'purple', shape: 'square', emoji: 'flower' }, // no match
-      { position: 'center', color: 'purple', shape: 'triangle', emoji: 'fire' }, // color, shape match
-      { position: 'center', color: 'green', shape: 'circle', emoji: 'fire' }, // no match
-      { position: 'right', color: 'blue', shape: 'square', emoji: 'flower' }, // no match
-      { position: 'center', color: 'green', shape: 'circle', emoji: 'fire' }, // position, color, shape, emoji match
-      { position: 'center', color: 'blue', shape: 'triangle', emoji: 'ice' }, // color match
-      { position: 'right', color: 'green', shape: 'triangle', emoji: 'flower' }, // color match
+      { color: 'purple', emoji: 'fire', position: 'left', shape: 'circle' }, // no match
+      { color: 'blue', emoji: 'flower', position: 'center', shape: 'square' }, // no match
+      { color: 'blue', emoji: 'ice', position: 'left', shape: 'triangle' }, // position match
+      { color: 'blue', emoji: 'fire', position: 'right', shape: 'circle' }, // color match
+      { color: 'purple', emoji: 'ice', position: 'right', shape: 'triangle' }, // shape, emoji match
+      { color: 'purple', emoji: 'flower', position: 'left', shape: 'square' }, // no match
+      { color: 'purple', emoji: 'fire', position: 'center', shape: 'triangle' }, // color, shape match
+      { color: 'green', emoji: 'fire', position: 'center', shape: 'circle' }, // no match
+      { color: 'blue', emoji: 'flower', position: 'right', shape: 'square' }, // no match
+      { color: 'green', emoji: 'fire', position: 'center', shape: 'circle' }, // position, color, shape, emoji match
+      { color: 'blue', emoji: 'ice', position: 'center', shape: 'triangle' }, // color match
+      { color: 'green', emoji: 'flower', position: 'right', shape: 'triangle' }, // color match
     ],
     stimulusSound: new Audio(stimulusSound),
   }),
   actions: {
     generateRandomStimulus() {
-      const positions = ['left', 'center', 'right'];
       const colors = ['purple', 'green', 'blue'];
-      const shapes = ['circle', 'square', 'triangle'];
       const emojis = ['fire', 'ice', 'flower'];
+      const positions = ['left', 'center', 'right'];
+      const shapes = ['circle', 'square', 'triangle'];
 
       const stimulus = {
-        position: positions[Math.floor(Math.random() * positions.length)],
         color: colors[Math.floor(Math.random() * colors.length)],
-        shape: shapes[Math.floor(Math.random() * shapes.length)],
         emoji: emojis[Math.floor(Math.random() * emojis.length)],
+        position: positions[Math.floor(Math.random() * positions.length)],
+        shape: shapes[Math.floor(Math.random() * shapes.length)],
       };
       // console.log("Generated random stimulus:", stimulus);
       return stimulus;
@@ -62,8 +63,9 @@ export const useGameStore = defineStore('game', {
       }
 
       this.respondedThisTurn = {
-        position: false,
         color: false,
+        emoji: false,
+        position: false,
         shape: false,
       };
 
@@ -81,15 +83,15 @@ export const useGameStore = defineStore('game', {
         const nBackStimulus = this.stimulusHistory[this.stimulusHistory.length - this.nBack];
         let potentialMatches = 0;
 
-        const positionMatch = nBackStimulus.position === this.currentStimulus.position;
         const colorMatch = nBackStimulus.color === this.currentStimulus.color;
-        const shapeMatch = nBackStimulus.shape === this.currentStimulus.shape;
         const emojiMatch = nBackStimulus.emoji === this.currentStimulus.emoji;
+        const positionMatch = nBackStimulus.position === this.currentStimulus.position;
+        const shapeMatch = nBackStimulus.shape === this.currentStimulus.shape;
 
-        potentialMatches += positionMatch ? 1 : 0;
         potentialMatches += colorMatch ? 1 : 0;
-        potentialMatches += shapeMatch ? 1 : 0;
         potentialMatches += emojiMatch ? 1 : 0;
+        potentialMatches += positionMatch ? 1 : 0;
+        potentialMatches += shapeMatch ? 1 : 0;
 
         this.previousPotentialCorrectAnswers += potentialMatches;
 
@@ -120,7 +122,12 @@ export const useGameStore = defineStore('game', {
       this.stimulusHistory = [];
       this.potentialCorrectAnswers = 0;
       this.previousPotentialCorrectAnswers = 0;
-      this.respondedThisTurn = { position: false, color: false, shape: false, emoji: false };
+      this.respondedThisTurn = {
+        color: false,
+        emoji: false,
+        position: false,
+        shape: false,
+      };
       this.deterministicIndex = 0;
       this.setNewStimulus();
     },
@@ -152,10 +159,10 @@ export const useGameStore = defineStore('game', {
         console.log("Comparing current stimulus and n-back stimulus", {current: this.currentStimulus, nBack: nBackStimulus});
 
         const isCorrect = (
-          stimulusType === 'position' && this.currentStimulus.position === nBackStimulus.position ||
           stimulusType === 'color' && this.currentStimulus.color === nBackStimulus.color ||
-          stimulusType === 'shape' && this.currentStimulus.shape === nBackStimulus.shape ||
-          stimulusType === 'emoji' && this.currentStimulus.emoji === nBackStimulus.emoji
+          stimulusType === 'emoji' && this.currentStimulus.emoji === nBackStimulus.emoji ||
+          stimulusType === 'position' && this.currentStimulus.position === nBackStimulus.position ||
+          stimulusType === 'shape' && this.currentStimulus.shape === nBackStimulus.shape
         );
 
         console.log("Is response correct:", isCorrect);

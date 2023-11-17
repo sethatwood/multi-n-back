@@ -21,26 +21,26 @@ import { useGameStore } from './store/gameStore';
 export default {
   name: "Stimulus",
   props: {
-    position: String,
     color: String,
-    shape: String,
     emoji: String,
+    position: String,
+    shape: String,
   },
   setup(props) {
     const gameStore = useGameStore();
 
     // Watching prop changes for logging
-    // watch(() => props.position, (newVal, oldVal) => {
-    //   console.log(`Stimulus position changed from ${oldVal} to ${newVal}`);
-    // });
     // watch(() => props.color, (newVal, oldVal) => {
     //   console.log(`Stimulus color changed from ${oldVal} to ${newVal}`);
     // });
-    // watch(() => props.shape, (newVal, oldVal) => {
-    //   console.log(`Stimulus shape changed from ${oldVal} to ${newVal}`);
-    // });
     // watch(() => props.emoji, (newVal, oldVal) => {
     //   console.log(`Stimulus emoji changed from ${oldVal} to ${newVal}`);
+    // });
+    // watch(() => props.position, (newVal, oldVal) => {
+    //   console.log(`Stimulus position changed from ${oldVal} to ${newVal}`);
+    // });
+    // watch(() => props.shape, (newVal, oldVal) => {
+    //   console.log(`Stimulus shape changed from ${oldVal} to ${newVal}`);
     // });
 
     return {

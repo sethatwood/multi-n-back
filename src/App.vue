@@ -20,10 +20,10 @@
     </div>
     <Stimulus
       class="mb-3"
-      :position="gameStore.currentStimulus.position"
       :color="gameStore.currentStimulus.color"
-      :shape="gameStore.currentStimulus.shape"
       :emoji="gameStore.currentStimulus.emoji"
+      :position="gameStore.currentStimulus.position"
+      :shape="gameStore.currentStimulus.shape"
       :flashBorder="gameStore.flashBorder"
     />
     <div class="grid grid-cols-2 gap-3">
@@ -168,10 +168,10 @@ export default {
     };
 
     const responseButtons = [
-      { type: 'position', label: 'Position' },
       { type: 'color', label: 'Color' },
+      { type: 'emoji', label: 'Emoji' },
+      { type: 'position', label: 'Position' },
       { type: 'shape', label: 'Shape' },
-      { type: 'emoji', label: 'Emoji' }
     ];
 
     return {
