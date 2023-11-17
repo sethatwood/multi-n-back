@@ -173,9 +173,13 @@ export const useGameStore = defineStore('game', {
 
         if (isCorrect) {
           this.score += 1;
+          this.incrementSound.pause();
+          this.incrementSound.currentTime = 0;
           this.incrementSound.play();
         } else {
           this.score -= 1;
+          this.decrementSound.pause();
+          this.decrementSound.currentTime = 0;
           this.decrementSound.play();
           this.incorrectResponses += 1;
           if (this.incorrectResponses >= 3) {

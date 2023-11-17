@@ -3,7 +3,7 @@
     <div class="relative mx-auto p-5 border container shadow-lg rounded-md bg-white">
       <IntroContent :n-back="gameStore.nBack" />
       <div class="items-center px-4 py-3">
-        <button @click="startGame" class="mt-3 p-4 text-lg bg-blue-900 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
+        <button @click="startGame" class="mt-3 p-4 text-lg bg-blue-800 text-white font-medium rounded-md w-full shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
           Start Game
         </button>
       </div>
@@ -134,7 +134,7 @@ export default {
 
     const buttonClass = (isDisabled) => {
       return `p-4 rounded text-lg ${
-        isDisabled ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-900 hover:bg-blue-800'
+        isDisabled ? 'bg-gray-900' : 'bg-blue-800 hover:bg-blue-700'
       }`;
     };
 
