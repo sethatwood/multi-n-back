@@ -1,28 +1,12 @@
 import { defineStore } from 'pinia';
 import stimulusSound from '../assets/stimulus.wav';
+import incrementSound from '../assets/ting.mp3';
+import decrementSound from '../assets/whip.mp3';
 
 export const useGameStore = defineStore('game', {
   state: () => ({
-    nBack: 2,
-    score: 0,
-    level: 1,
-    timeLeft: 5,
     currentStimulus: {},
-    stimulusHistory: [],
-    timer: null,
-    flashBorder: false,
-    respondedThisTurn: {
-      color: false,
-      emoji: false,
-      position: false,
-      shape: false,
-    },
-    incorrectResponses: 0,
-    potentialCorrectAnswers: 0,
-    previousPotentialCorrectAnswers: 0,
-    highScoreData: JSON.parse(localStorage.getItem('highScoreData')) || { score: 0, potentialCorrectAnswers: 0 },
-    isDeterministic: false,
-    isPaused: false,
+    decrementSound: new Audio(decrementSound),
     deterministicIndex: 0,
     deterministicStimuli: [
       { color: 'purple', emoji: 'fire', position: 'left', shape: 'circle' }, // no match
@@ -38,6 +22,26 @@ export const useGameStore = defineStore('game', {
       { color: 'blue', emoji: 'ice', position: 'center', shape: 'triangle' }, // color match
       { color: 'green', emoji: 'flower', position: 'right', shape: 'triangle' }, // color match
     ],
+    flashBorder: false,
+    highScoreData: JSON.parse(localStorage.getItem('highScoreData')) || { score: 0, potentialCorrectAnswers: 0 },
+    incorrectResponses: 0,
+    incrementSound: new Audio(incrementSound),
+    isDeterministic: false,
+    isPaused: false,
+    level: 1,
+    nBack: 2,
+    potentialCorrectAnswers: 0,
+    previousPotentialCorrectAnswers: 0,
+    score: 0,
+    stimulusHistory: [],
+    timeLeft: 5,
+    timer: null,
+    respondedThisTurn: {
+      color: false,
+      emoji: false,
+      position: false,
+      shape: false,
+    },
     stimulusSound: new Audio(stimulusSound),
   }),
   actions: {
@@ -169,10 +173,10 @@ export const useGameStore = defineStore('game', {
 
         if (isCorrect) {
           this.score += 1;
-          // play sound
+          this.incrementSound.play();
         } else {
           this.score -= 1;
-          //play sound
+          this.decrementSound.play();
           this.incorrectResponses += 1;
           if (this.incorrectResponses >= 3) {
             if (this.score > this.highScoreData.score) {
