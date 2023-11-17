@@ -7,9 +7,7 @@
           Start Game
         </button>
       </div>
-      <div class="text-center text-sm py-2 mt-2">
-        Built by Human+AI collaboration with 💜
-      </div>
+      <Footer />
     </div>
   </div>
   <div v-else class="max-w-md mx-auto px-4 text-center uppercase text-white bg-slate-800">
@@ -80,6 +78,7 @@
           {{ gameStore.deterministicIndex - 1 === index ? '<-' : '' }}
       </div>
     </div>
+    <Footer />
   </div>
 </template>
 
@@ -88,12 +87,14 @@ import { onUnmounted, ref, watch, computed } from 'vue';
 import { useGameStore } from './store/gameStore';
 import IntroContent from './IntroContent.vue';
 import Stimulus from './Stimulus.vue';
+import Footer from './Footer.vue';
 
 export default {
   name: 'App',
   components: {
     IntroContent,
     Stimulus,
+    Footer,
   },
   setup() {
     const gameStore = useGameStore();
