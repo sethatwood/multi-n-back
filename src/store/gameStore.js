@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia';
 import stimulusSound from '../assets/stimulus.wav';
 import incrementSound from '../assets/ting.mp3';
-import decrementSound from '../assets/whip.mp3';
+import strikeSound from '../assets/whip.mp3';
 
 export const useGameStore = defineStore('game', {
   state: () => ({
     currentStimulus: {},
-    decrementSound: new Audio(decrementSound),
+    strikeSound: new Audio(strikeSound),
     deterministicIndex: 0,
     deterministicStimuli: [
       { color: 'purple', emoji: 'fire', position: 'left', shape: 'circle' }, // no match
@@ -177,10 +177,9 @@ export const useGameStore = defineStore('game', {
           this.incrementSound.currentTime = 0;
           this.incrementSound.play();
         } else {
-          this.score -= 1;
-          this.decrementSound.pause();
-          this.decrementSound.currentTime = 0;
-          this.decrementSound.play();
+          this.strikeSound.pause();
+          this.strikeSound.currentTime = 0;
+          this.strikeSound.play();
           this.incorrectResponses += 1;
           if (this.incorrectResponses >= 3) {
             if (this.score > this.highScoreData.score) {

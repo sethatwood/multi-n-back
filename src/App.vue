@@ -14,8 +14,7 @@
     <div v-if="showInstructionMessage" class="my-6 text-center text-gray-400 text-sm cursor-pointer" @click="dismissInstructionMessage">
       &#x24E7; Match attributes from {{ gameStore.nBack }} steps back
     </div>
-    <div class="mt-12 mb-3">
-      <p class="text-md uppercase text-red-500">Strikes: {{ gameStore.incorrectResponses }}</p>
+    <div class="mt-16 mb-3">
       <p class="text-3xl font-bold">{{ gameStore.timeLeft }}</p>
     </div>
     <Stimulus
@@ -35,11 +34,14 @@
       </button>
     </div>
     <div class="mt-5 text-center">
+      <p class="text-sm uppercase text-red-500">
+        <span class="text-lg font-bold">{{ gameStore.incorrectResponses }}</span> Strikes
+      </p>
       <p class="text-xl">
         <span class="text-xs text-gray-400">Score: </span>
         <span :class="scoreClass">{{ gameStore.score }}</span>
         <span class="text-sm text-gray-400">
-          / {{ gameStore.potentialCorrectAnswers }} ({{ calculateAccuracy(gameStore.score, gameStore.potentialCorrectAnswers) }}%)
+          / {{ gameStore.potentialCorrectAnswers }} ({{ calculateAccuracy(gameStore.score, gameStore.previousPotentialCorrectAnswers) }}%)
         </span>
       </p>
       <p class="text-sm uppercase text-green-700">
