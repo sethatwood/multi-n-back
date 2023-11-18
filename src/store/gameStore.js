@@ -205,5 +205,14 @@ export const useGameStore = defineStore('game', {
       const nBackIndex = state.stimulusHistory.length - state.nBack - 1;
       return nBackIndex < 0;
     },
+    currentScoreAccuracy: (state) => {
+      if (state.potentialCorrectAnswers === 0) return 0;
+      return Math.round((state.score / state.potentialCorrectAnswers) * 100);
+    },
+    highScoreAccuracy: (state) => {
+      const highScorePotential = state.highScoreData.potentialCorrectAnswers;
+      if (highScorePotential === 0) return 0;
+      return Math.round((state.highScoreData.score / highScorePotential) * 100);
+    },
   },
 });

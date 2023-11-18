@@ -41,12 +41,12 @@
         <span class="text-xs text-gray-400">Score: </span>
         <span :class="scoreClass">{{ gameStore.score }}</span>
         <span class="text-sm text-gray-400">
-          / {{ gameStore.potentialCorrectAnswers }} ({{ calculateAccuracy(gameStore.score, gameStore.previousPotentialCorrectAnswers) }}%)
+          / {{ gameStore.potentialCorrectAnswers }} ({{ gameStore.currentScoreAccuracy }}%)
         </span>
       </p>
       <p class="mt-1 text-sm uppercase text-green-700">
         High Score: {{ gameStore.highScoreData.score }}/{{ gameStore.highScoreData.potentialCorrectAnswers }}
-        ({{ calculateAccuracy(gameStore.highScoreData.score, gameStore.highScoreData.potentialCorrectAnswers) }}%)
+        ({{ gameStore.highScoreAccuracy }}%)
       </p>
       <button v-if="gameStore.incorrectResponses >= 3"
               @click="startGame"
@@ -157,11 +157,6 @@ export default {
         : 'text-xl font-medium';
     });
 
-    const calculateAccuracy = (score, total) => {
-      if (total === 0) return 0;
-      return Math.round((score / total) * 100);
-    };
-
     const colorClass = (color) => {
       switch (color) {
         case 'purple': return 'text-purple-500';
@@ -185,7 +180,6 @@ export default {
       startGame,
       buttonClass,
       scoreClass,
-      calculateAccuracy,
       toggleDeterministicMode,
       toggleGame,
       colorClass,
