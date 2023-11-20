@@ -128,12 +128,11 @@ export default {
     const nBackInput = ref(gameStore.nBack);
     const timeLeftInput = ref(gameStore.timeLeft);
     const showModal = ref(true);
-    const showInstructionMessage = ref(!localStorage.getItem('instructionMessageDismissed'));
+    const showInstructionMessage = ref(true);
 
     const dismissInstructionMessage = () => {
       console.log("Instruction message dismissed");
       showInstructionMessage.value = false;
-      localStorage.setItem('instructionMessageDismissed', 'true');
     }
 
     const startGame = () => {
