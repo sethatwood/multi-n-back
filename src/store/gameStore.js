@@ -9,7 +9,7 @@ export const useGameStore = defineStore('game', {
     deterministicIndex: 0,
     deterministicStimuli: [
       { color: 'blue', emoji: 'flower', position: 'center', shape: 'square' },
-      { color: 'purple', emoji: 'ice', position: 'left', shape: 'triangle' },
+      { color: 'green', emoji: 'ice', position: 'left', shape: 'triangle' },
       { color: 'blue', emoji: 'fire', position: 'right', shape: 'circle' },
       { color: 'green', emoji: 'flower', position: 'center', shape: 'square' },
       { color: 'blue', emoji: 'ice', position: 'left', shape: 'triangle' },
