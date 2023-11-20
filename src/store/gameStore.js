@@ -129,16 +129,16 @@ export const useGameStore = defineStore('game', {
       this.deterministicIndex = 0;
       this.setNewStimulus();
     },
-    startGame() {
+    startGame(timeLeft = 5) {
       console.log("Starting game");
       this.resetGameState();
+      this.timeLeft = timeLeft;
       this.timer = setInterval(() => {
-        // console.log(`Timer tick. Time left: ${this.timeLeft}`);
         if (this.timeLeft > 1) {
             this.timeLeft -= 1;
         } else {
             this.setNewStimulus();
-            this.timeLeft = 5;
+            this.timeLeft = timeLeft;
         }
       }, 1000);
     },

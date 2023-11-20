@@ -3,6 +3,16 @@
     <div class="relative mx-auto p-5 border container shadow-lg rounded-md bg-white">
       <IntroContent :n-back="gameStore.nBack" />
       <div class="items-center px-4 py-3">
+        <div class="flex justify-around items-center my-4">
+          <div>
+            <label for="nBack" class="block text-sm font-medium text-gray-700">N-Back</label>
+            <input type="number" id="nBack" v-model="nBackInput" min="1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+          </div>
+          <div>
+            <label for="timeLeft" class="block text-sm font-medium text-gray-700">Timer (sec)</label>
+            <input type="number" id="timeLeft" v-model="timeLeftInput" min="1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+          </div>
+        </div>
         <button @click="startGame" class="mt-3 p-4 text-lg bg-blue-800 text-white font-medium rounded-md w-full shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
           Start Game
         </button>
@@ -54,8 +64,17 @@
         Restart Game
       </button>
     </div>
-    <!-- Buttons to toggle deterministic mode and pause the game -->
-    <button @click="toggleGame" class="mx-1 mt-5 bg-gray-700 hover:bg-gray-900 text-gray-400 py-1 px-2 rounded">
+    <div v-if="gameStore.isPaused" class="flex justify-around items-center my-4">
+      <div>
+        <label for="nBack" class="block text-sm font-medium text-gray-500">N-Back</label>
+        <input type="number" id="nBack" v-model="nBackInput" min="1" class="text-black mt-1 px-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+      </div>
+      <div>
+        <label for="timeLeft" class="block text-sm font-medium text-gray-500">Timer (sec)</label>
+        <input type="number" id="timeLeft" v-model="timeLeftInput" min="1" class="text-black mt-1 px-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+      </div>
+    </div>
+    <button @click="toggleGame" class="mx-1 mt-5p bg-gray-700 hover:bg-gray-900 text-gray-400 py-1 px-2 rounded">
       {{ gameStore.isPaused ? 'Start' : 'End' }} Game
     </button>
     <button
@@ -100,6 +119,8 @@ export default {
   },
   setup() {
     const gameStore = useGameStore();
+    const nBackInput = ref(gameStore.nBack);
+    const timeLeftInput = ref(gameStore.timeLeft);
     const showModal = ref(true);
     const showInstructionMessage = ref(!localStorage.getItem('instructionMessageDismissed'));
 
@@ -111,8 +132,13 @@ export default {
 
     const startGame = () => {
       console.log("Start game button clicked");
+
+      // Update gameStore values before starting the game
+      gameStore.nBack = nBackInput.value;
+      gameStore.timeLeft = timeLeftInput.value;
+
       showModal.value = false;
-      gameStore.startGame();
+      gameStore.startGame(timeLeftInput.value);
     };
 
     const toggleDeterministicMode = () => {
@@ -122,7 +148,7 @@ export default {
 
     const toggleGame = () => {
       console.log(gameStore.isPaused ? "Resuming game" : "Pausing game");
-      gameStore.isPaused ? gameStore.startGame() : gameStore.stopGame();
+      gameStore.isPaused ? gameStore.startGame(timeLeftInput.value) : gameStore.stopGame();
     };
 
     onUnmounted(() => {
@@ -186,6 +212,8 @@ export default {
       responseButtons,
       showInstructionMessage,
       dismissInstructionMessage,
+      nBackInput,
+      timeLeftInput,
     };
   },
 };
