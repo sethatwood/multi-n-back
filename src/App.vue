@@ -15,7 +15,7 @@
       &#x24E7; Match attributes from {{ gameStore.nBack }} steps back
     </div>
     <div class="mt-16 mb-3">
-      <p class="text-3xl font-bold">{{ gameStore.timeLeft }}</p>
+      <p class="countdown-text">{{ gameStore.timeLeft }}</p>
     </div>
     <Stimulus
       class="mb-3"
@@ -190,3 +190,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.countdown-text {
+  font-size: 3.33rem;
+  font-weight: bold;
+}
+</style>
