@@ -9,18 +9,12 @@ export const useGameStore = defineStore('game', {
     strikeSound: new Audio(strikeSound),
     deterministicIndex: 0,
     deterministicStimuli: [
-      { color: 'purple', emoji: 'fire', position: 'left', shape: 'circle' }, // no match
-      { color: 'blue', emoji: 'flower', position: 'center', shape: 'square' }, // no match
-      { color: 'blue', emoji: 'ice', position: 'left', shape: 'triangle' }, // position match
-      { color: 'blue', emoji: 'fire', position: 'right', shape: 'circle' }, // color match
-      { color: 'purple', emoji: 'ice', position: 'right', shape: 'triangle' }, // shape, emoji match
-      { color: 'purple', emoji: 'flower', position: 'left', shape: 'square' }, // no match
-      { color: 'purple', emoji: 'fire', position: 'center', shape: 'triangle' }, // color, shape match
-      { color: 'green', emoji: 'fire', position: 'center', shape: 'circle' }, // no match
-      { color: 'blue', emoji: 'flower', position: 'right', shape: 'square' }, // no match
-      { color: 'green', emoji: 'fire', position: 'center', shape: 'circle' }, // position, color, shape, emoji match
-      { color: 'blue', emoji: 'ice', position: 'center', shape: 'triangle' }, // color match
-      { color: 'green', emoji: 'flower', position: 'right', shape: 'triangle' }, // color match
+      { color: 'blue', emoji: 'flower', position: 'center', shape: 'square' },
+      { color: 'green', emoji: 'ice', position: 'left', shape: 'triangle' },
+      { color: 'blue', emoji: 'fire', position: 'right', shape: 'circle' },
+      { color: 'green', emoji: 'flower', position: 'center', shape: 'square' },
+      { color: 'blue', emoji: 'ice', position: 'left', shape: 'triangle' },
+      { color: 'green', emoji: 'flower', position: 'right', shape: 'circle' },
     ],
     flashBorder: false,
     highScoreData: JSON.parse(localStorage.getItem('highScoreData')) || { score: 0, potentialCorrectAnswers: 0 },
