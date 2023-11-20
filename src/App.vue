@@ -83,6 +83,12 @@
     >
       {{ gameStore.isDeterministic ? 'Disable' : 'Enable' }} Deterministic
     </button>
+    <div class="mt-3">
+      <button class="text-xs text-gray-400 bg-gray-800  hover:bg-gray-950 p-2 rounded-full focus:outline-none" @click="toggleAudio">
+        <i v-if="gameStore.isAudioEnabled" class="fas fa-volume-up"></i>
+        <i v-else class="fas fa-volume-mute"></i>
+      </button>
+    </div>
     <div
       v-if="gameStore.isDeterministic"
       class="mt-5 text-center text-sm"
@@ -199,21 +205,26 @@ export default {
       { type: 'shape', label: 'Shape' },
     ];
 
+    const toggleAudio = () => {
+      gameStore.toggleAudio();
+    };
+
     return {
+      buttonClass,
+      colorClass,
+      dismissInstructionMessage,
       gameStore,
+      nBackInput,
       respond,
+      responseButtons,
+      scoreClass,
+      showInstructionMessage,
       showModal,
       startGame,
-      buttonClass,
-      scoreClass,
+      timeLeftInput,
+      toggleAudio,
       toggleDeterministicMode,
       toggleGame,
-      colorClass,
-      responseButtons,
-      showInstructionMessage,
-      dismissInstructionMessage,
-      nBackInput,
-      timeLeftInput,
     };
   },
 };

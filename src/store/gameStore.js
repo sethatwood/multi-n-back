@@ -6,7 +6,6 @@ import strikeSound from '../assets/whip.mp3';
 export const useGameStore = defineStore('game', {
   state: () => ({
     currentStimulus: {},
-    strikeSound: new Audio(strikeSound),
     deterministicIndex: 0,
     deterministicStimuli: [
       { color: 'blue', emoji: 'flower', position: 'center', shape: 'square' },
@@ -20,23 +19,25 @@ export const useGameStore = defineStore('game', {
     highScoreData: JSON.parse(localStorage.getItem('highScoreData')) || { score: 0, potentialCorrectAnswers: 0 },
     incorrectResponses: 0,
     incrementSound: new Audio(incrementSound),
+    isAudioEnabled: true,
     isDeterministic: false,
     isPaused: false,
     level: 1,
     nBack: 2,
     potentialCorrectAnswers: 0,
     previousPotentialCorrectAnswers: 0,
-    score: 0,
-    stimulusHistory: [],
-    timeLeft: 5,
-    timer: null,
     respondedThisTurn: {
       color: false,
       emoji: false,
       position: false,
       shape: false,
     },
+    score: 0,
+    strikeSound: new Audio(strikeSound),
+    stimulusHistory: [],
     stimulusSound: new Audio(stimulusSound),
+    timeLeft: 5,
+    timer: null,
   }),
   actions: {
     generateRandomStimulus() {
@@ -100,10 +101,18 @@ export const useGameStore = defineStore('game', {
       this.stimulusHistory.push({ ...this.currentStimulus });
       console.log("Setting new stimulus:", { ...this.currentStimulus });
       this.flashBorder = true;
-      this.stimulusSound.play();
+      this.playSound(this.stimulusSound);
       setTimeout(() => {
         this.flashBorder = false;
       }, 300);
+    },
+    toggleAudio() {
+      this.isAudioEnabled = !this.isAudioEnabled;
+    },
+    playSound(sound) {
+      if (this.isAudioEnabled) {
+        sound.play();
+      }
     },
     toggleDeterministicMode() {
       this.isDeterministic = !this.isDeterministic;
@@ -169,11 +178,11 @@ export const useGameStore = defineStore('game', {
           this.score += 1;
           this.incrementSound.pause();
           this.incrementSound.currentTime = 0;
-          this.incrementSound.play();
+          this.playSound(this.incrementSound);
         } else {
           this.strikeSound.pause();
           this.strikeSound.currentTime = 0;
-          this.strikeSound.play();
+          this.playSound(this.strikeSound);
           this.incorrectResponses += 1;
           if (this.incorrectResponses >= 3) {
             if (this.score > this.highScoreData.score) {
