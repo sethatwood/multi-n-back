@@ -1,26 +1,26 @@
 <template>
-  <div v-if="showModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto" id="howToPlayModal">
-    <div class="relative mx-auto p-5 border container shadow-lg rounded-md bg-white">
+  <div v-if="showModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 overflow-y-auto" id="howToPlayModal">
+    <div class="relative mx-auto p-5 border container shadow-lg rounded-md bg-slate-200">
       <IntroContent :n-back="gameStore.nBack" />
       <div class="items-center px-4 py-3">
         <div class="flex justify-around items-center my-4">
           <div>
             <label for="nBack" class="block text-sm font-medium text-gray-700">N-Back</label>
-            <input type="number" id="nBack" v-model="nBackInput" min="1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+            <input type="number" id="nBack" v-model="nBackInput" min="1" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
           </div>
           <div>
             <label for="timeLeft" class="block text-sm font-medium text-gray-700">Timer (sec)</label>
-            <input type="number" id="timeLeft" v-model="timeLeftInput" min="1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+            <input type="number" id="timeLeft" v-model="timeLeftInput" min="1" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
           </div>
         </div>
-        <button @click="startGame" class="mt-3 p-4 text-lg bg-blue-800 text-white font-medium rounded-md w-full shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
+        <button @click="startGame" class="mt-3 p-4 text-lg bg-blue-900 text-white font-medium rounded-md w-full shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
           Start Game
         </button>
       </div>
       <Footer />
     </div>
   </div>
-  <div v-else class="max-w-md mx-auto px-4 text-center uppercase text-white bg-slate-800">
+  <div v-else class="max-w-md mx-auto px-4 text-center uppercase text-white bg-slate-900">
     <div v-if="showInstructionMessage" class="my-6 text-center text-gray-400 text-sm cursor-pointer" @click="dismissInstructionMessage">
       &#x24E7; Match attributes from {{ gameStore.nBack }} steps back
     </div>
@@ -67,19 +67,19 @@
     <div v-if="gameStore.isPaused" class="flex justify-around items-center my-4">
       <div>
         <label for="nBack" class="block text-sm font-medium text-gray-500">N-Back</label>
-        <input type="number" id="nBack" v-model="nBackInput" min="1" class="text-black mt-1 px-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+        <input type="number" id="nBack" v-model="nBackInput" min="1" class="text-black mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
       </div>
       <div>
         <label for="timeLeft" class="block text-sm font-medium text-gray-500">Timer (sec)</label>
-        <input type="number" id="timeLeft" v-model="timeLeftInput" min="1" class="text-black mt-1 px-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+        <input type="number" id="timeLeft" v-model="timeLeftInput" min="1" class="text-black mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
       </div>
     </div>
-    <button @click="toggleGame" class="mx-1 mt-5p bg-gray-700 hover:bg-gray-900 text-gray-400 py-1 px-2 rounded">
+    <button @click="toggleGame" class="mx-1 mt-5p bg-gray-800 hover:bg-gray-950 text-gray-400 py-1 px-2 rounded">
       {{ gameStore.isPaused ? 'Start' : 'End' }} Game
     </button>
     <button
       @click="toggleDeterministicMode"
-      class="mx-1 my-1 bg-gray-700 hover:bg-gray-900 text-gray-400 py-1 px-2 rounded"
+      class="mx-1 my-1 bg-gray-800 hover:bg-gray-950 text-gray-400 py-1 px-2 rounded"
     >
       {{ gameStore.isDeterministic ? 'Disable' : 'Enable' }} Deterministic
     </button>
@@ -162,9 +162,9 @@ export default {
 
     const buttonClass = (isResponded, isEarlyInGame) => {
       if (isResponded || isEarlyInGame) {
-        return 'p-4 rounded text-lg bg-gray-900';
+        return 'p-4 rounded text-lg bg-gray-950';
       } else {
-        return 'p-4 rounded text-lg bg-blue-800 hover:bg-blue-700';
+        return 'p-4 rounded text-lg bg-blue-900 hover:bg-blue-800';
       }
     };
 

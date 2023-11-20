@@ -5,7 +5,7 @@
     <p class=" text-center text-md mt-2">
       Poly N-Back is a variation of the <a href="https://en.wikipedia.org/wiki/N-back" class="text-blue-500 hover:text-blue-700 underline" target="_blank">N-back</a> memory game designed to improve your cognitive skills.
     </p>
-    <div class="border mt-4" />
+    <div class="border border-slate-300 mt-4" />
     <p class="text-md mt-4 font-semibold">
       Here's how you can play:
     </p>

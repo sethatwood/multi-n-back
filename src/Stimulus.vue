@@ -2,7 +2,7 @@
   <div class="flex justify-center space-x-2">
     <!-- Cells -->
     <div v-for="cellPosition in ['left', 'center', 'right']" :key="cellPosition"
-         :class="[cellClass, 'flex-1 h-32 bg-slate-900 rounded-md flex items-center justify-center relative']">
+         :class="[cellClass, 'flex-1 h-32 bg-slate-950 rounded-md flex items-center justify-center relative']">
       <template v-if="position === cellPosition">
         <div v-if="shape !== 'triangle'" :class="[colorClass, shapeClass]"></div>
         <div v-if="shape === 'triangle'" :class="['triangle', colorClass]"></div>
