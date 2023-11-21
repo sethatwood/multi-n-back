@@ -2,20 +2,14 @@
   <div v-if="showModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 overflow-y-auto" id="howToPlayModal">
     <div class="relative mx-auto p-5 border container shadow-lg rounded-md bg-slate-200">
       <IntroContent :n-back="gameStore.nBack" />
-      <div class="items-center px-4 py-3">
-        <div class="flex justify-around items-center my-4">
-          <div>
-            <label for="nBack" class="block text-sm font-medium text-gray-700">N-Back</label>
-            <input type="number" id="nBack" v-model="nBackInput" min="1" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-          </div>
-          <div>
-            <label for="timeLeft" class="block text-sm font-medium text-gray-700">Timer (sec)</label>
-            <input type="number" id="timeLeft" v-model="timeLeftInput" min="1" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-          </div>
-        </div>
-        <button @click="startGame" class="mt-3 p-4 text-lg bg-blue-900 text-white font-medium rounded-md w-full shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
-          Start Game
-        </button>
+      <div v-if="showModal">
+        <ConfigStart
+          :nBack="Number(nBackInput)"
+          :timeLeft="Number(timeLeftInput)"
+          @update:nBack="nBackInput = $event"
+          @update:timeLeft="timeLeftInput = $event"
+          @startGame="startGame"
+        />
       </div>
       <Footer />
     </div>
@@ -54,21 +48,15 @@
         High Score: {{ gameStore.highScoreData.score }}/{{ gameStore.highScoreData.potentialCorrectAnswers }}
         ({{ gameStore.highScoreAccuracy }}%)
       </p>
-      <button v-if="gameStore.incorrectResponses >= 3"
-              @click="startGame"
-              class="mt-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        Restart Game
-      </button>
     </div>
-    <div v-if="gameStore.isPaused" class="flex justify-around items-center my-4">
-      <div>
-        <label for="nBack" class="block text-sm font-medium text-gray-500">N-Back</label>
-        <input type="number" id="nBack" v-model="nBackInput" min="1" class="text-black mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-      </div>
-      <div>
-        <label for="timeLeft" class="block text-sm font-medium text-gray-500">Timer (sec)</label>
-        <input type="number" id="timeLeft" v-model="timeLeftInput" min="1" class="text-black mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-      </div>
+    <div v-if="gameStore.isPaused || gameStore.incorrectResponses >= 3">
+      <ConfigStart
+        :nBack="Number(nBackInput)"
+        :timeLeft="Number(timeLeftInput)"
+        @update:nBack="nBackInput = $event"
+        @update:timeLeft="timeLeftInput = $event"
+        @startGame="startGame"
+      />
     </div>
     <button @click="toggleGame" class="mx-1 mt-3 bg-gray-800 hover:bg-gray-950 text-gray-400 py-1 px-2 rounded">
       {{ gameStore.isPaused ? 'Start' : 'End' }} Game
@@ -109,6 +97,7 @@
 import { onUnmounted, ref, watch, computed } from 'vue';
 import { useGameStore } from './store/gameStore';
 import IntroContent from './IntroContent.vue';
+import ConfigStart from './ConfigStart.vue';
 import Stimulus from './Stimulus.vue';
 import Footer from './Footer.vue';
 
@@ -116,6 +105,7 @@ export default {
   name: 'App',
   components: {
     IntroContent,
+    ConfigStart,
     Stimulus,
     Footer,
   },
