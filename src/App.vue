@@ -1,16 +1,14 @@
 <template>
   <div v-if="showModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 overflow-y-auto" id="howToPlayModal">
     <div class="relative mx-auto p-5 border container shadow-lg rounded-md bg-slate-200">
+      <ConfigStart
+        :nBack="Number(nBackInput)"
+        :timeLeft="Number(timeLeftInput)"
+        @update:nBack="nBackInput = $event"
+        @update:timeLeft="timeLeftInput = $event"
+        @startGame="startGame"
+      />
       <IntroContent :n-back="gameStore.nBack" />
-      <div v-if="showModal">
-        <ConfigStart
-          :nBack="Number(nBackInput)"
-          :timeLeft="Number(timeLeftInput)"
-          @update:nBack="nBackInput = $event"
-          @update:timeLeft="timeLeftInput = $event"
-          @startGame="startGame"
-        />
-      </div>
       <Footer />
     </div>
   </div>
@@ -121,12 +119,18 @@ export default {
       showInstructionMessage.value = false;
     }
 
+    watch(nBackInput, (newNBack, oldNBack) => {
+      console.log(`N-Back changed from ${oldNBack} to ${newNBack}`);
+      gameStore.nBack = newNBack;
+    });
+
+    watch(timeLeftInput, (newTimeLeft, oldTimeLeft) => {
+      console.log(`Time left changed from ${oldTimeLeft} to ${newTimeLeft}`);
+      gameStore.timeLeft = newTimeLeft;
+    });
+
     const startGame = () => {
       console.log("Start game button clicked");
-
-      // Update gameStore values before starting the game
-      gameStore.nBack = nBackInput.value;
-      gameStore.timeLeft = timeLeftInput.value;
 
       showModal.value = false;
       gameStore.startGame(timeLeftInput.value);

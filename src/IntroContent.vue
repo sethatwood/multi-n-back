@@ -10,13 +10,13 @@
       Here's how you can play:
     </p>
     <p class="text-md mt-2">
-      • Click the buttons (Position, Color, Shape) that match the stimuli you saw <strong>{{ gameStore.nBack }}</strong> turns ago. Aim to remember and match each attribute (position, color, shape) as it appears.
+      • Click the buttons (Color, Emoji, Position, Shape) that match the attributes you saw <strong>{{ gameStore.nBack }}</strong> turns ago.
     </p>
     <p class="text-md mt-2">
-      • Correct responses increase your score. Incorrect responses decrease it and count as a strike.
+      • Correct responses increase your score.
     </p>
     <p class="text-md mt-2">
-      • The game ends if you accumulate 3 strikes. Aim to achieve the highest score possible without hitting 3 strikes.
+      • The game ends if you accumulate 3 strikes.
     </p>
     <p class="text-md mt-2">
       • Your high score is recorded, so you can see your progress over time.
