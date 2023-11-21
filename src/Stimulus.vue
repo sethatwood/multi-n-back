@@ -50,9 +50,9 @@ export default {
   computed: {
     colorClass() {
       switch (this.color) {
-        case 'purple': return 'text-purple-500';
-        case 'green': return 'text-green-500';
-        case 'blue': return 'text-blue-500';
+        case 'purple': return 'text-purple-600';
+        case 'green': return 'text-green-600';
+        case 'blue': return 'text-blue-600';
         default: return '';
       }
     },

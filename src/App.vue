@@ -44,17 +44,13 @@
       </button>
     </div>
     <div class="text-center">
-      <p class="mt-4 text-sm uppercase text-red-500">
-        <span class="text-lg font-bold">{{ gameStore.incorrectResponses }}</span> Strikes
-      </p>
-      <p class="mt-1 text-xl">
-        <span class="text-xs text-gray-400">Score: </span>
-        <span :class="scoreClass">{{ gameStore.score }}</span>
-        <span class="text-sm text-gray-400">
-          / {{ gameStore.potentialCorrectAnswers }} ({{ gameStore.currentScoreAccuracy }}%)
-        </span>
-      </p>
-      <p class="mt-1 text-sm uppercase text-green-700">
+      <div class="mt-4 text-sm uppercase text-red-500 flex items-center justify-center">
+        <span class="text-2xl font-bold">{{ gameStore.incorrectResponses }}</span>&nbsp;Strikes
+      </div>
+      <div class="text-sm uppercase text-green-500 flex items-center justify-center">
+        <span class="text-2xl font-bold">{{ gameStore.score }}</span>&nbsp;Points
+      </div>
+      <p class="mt-2 text-sm uppercase text-gray-500">
         High Score: {{ gameStore.highScoreData.score }}/{{ gameStore.highScoreData.potentialCorrectAnswers }}
         ({{ gameStore.highScoreAccuracy }}%)
       </p>
@@ -74,7 +70,7 @@
         <input type="number" id="timeLeft" v-model="timeLeftInput" min="1" class="text-black mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
       </div>
     </div>
-    <button @click="toggleGame" class="mx-1 mt-5p bg-gray-800 hover:bg-gray-950 text-gray-400 py-1 px-2 rounded">
+    <button @click="toggleGame" class="mx-1 mt-3 bg-gray-800 hover:bg-gray-950 text-gray-400 py-1 px-2 rounded">
       {{ gameStore.isPaused ? 'Start' : 'End' }} Game
     </button>
     <button
@@ -83,15 +79,15 @@
     >
       {{ gameStore.isDeterministic ? 'Disable' : 'Enable' }} Deterministic
     </button>
-    <div class="mt-3">
-      <button class="text-xs text-gray-400 bg-gray-800  hover:bg-gray-950 p-2 rounded-full focus:outline-none" @click="toggleAudio">
+    <div class="mt-2">
+      <button class="text-xs text-gray-400 bg-gray-800  hover:bg-gray-950 p-3 rounded-full focus:outline-none" @click="toggleAudio">
         <i v-if="gameStore.isAudioEnabled" class="fas fa-volume-up"></i>
         <i v-else class="fas fa-volume-mute"></i>
       </button>
     </div>
     <div
       v-if="gameStore.isDeterministic"
-      class="mt-5 text-center text-sm"
+      class="mt-4 text-center text-sm"
     >
       <div v-for="stimulus, index in gameStore.deterministicStimuli" :key="index" class="mt-1">
           {{ gameStore.deterministicIndex - 1 === index ? '->' : '' }}

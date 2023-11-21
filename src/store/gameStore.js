@@ -188,7 +188,7 @@ export const useGameStore = defineStore('game', {
             if (this.score > this.highScoreData.score) {
               this.highScoreData = {
                 score: this.score,
-                potentialCorrectAnswers: this.potentialCorrectAnswers
+                potentialCorrectAnswers: this.previousPotentialCorrectAnswers
               };
               localStorage.setItem('highScoreData', JSON.stringify(this.highScoreData));
             }
