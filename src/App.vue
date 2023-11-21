@@ -18,7 +18,7 @@
     <div v-if="showInstructionMessage" class="my-6 text-center text-gray-400 text-sm cursor-pointer" @click="dismissInstructionMessage">
       &#x24E7; Match attributes from {{ gameStore.nBack }} steps back
     </div>
-    <div class="mt-16 mb-3">
+    <div class="mt-8 mb-3">
       <p class="countdown-text">{{ gameStore.timeLeft }}</p>
     </div>
     <Stimulus
