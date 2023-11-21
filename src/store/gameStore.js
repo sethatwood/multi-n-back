@@ -19,7 +19,7 @@ export const useGameStore = defineStore('game', {
     highScoreData: JSON.parse(localStorage.getItem('highScoreData')) || { score: 0, potentialCorrectAnswers: 0 },
     incorrectResponses: 0,
     incrementSound: new Audio(incrementSound),
-    isAudioEnabled: true,
+    isAudioEnabled: JSON.parse(localStorage.getItem('isAudioEnabled')) ?? true,
     isDeterministic: false,
     isPaused: false,
     level: 1,
@@ -108,6 +108,7 @@ export const useGameStore = defineStore('game', {
     },
     toggleAudio() {
       this.isAudioEnabled = !this.isAudioEnabled;
+      localStorage.setItem('isAudioEnabled', JSON.stringify(this.isAudioEnabled));
     },
     playSound(sound) {
       if (this.isAudioEnabled) {
