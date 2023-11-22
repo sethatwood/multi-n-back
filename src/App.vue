@@ -36,18 +36,34 @@
       </button>
     </div>
     <div class="text-center">
-      <div class="mt-4 text-sm uppercase text-red-500 flex items-center justify-center">
-        <span class="text-2xl font-bold">{{ gameStore.incorrectResponses }}</span>&nbsp;Strikes
+      <div v-if="!gameStore.isStopped" class="strikes-score">
+        <div class="mt-4 text-sm uppercase text-red-500 flex items-center justify-center">
+          <span class="text-2xl font-bold">{{ gameStore.incorrectResponses }}</span>&nbsp;Strikes
+        </div>
+        <div class="text-sm uppercase text-green-500 flex items-center justify-center">
+          <span class="text-3xl font-bold">{{ gameStore.score }}</span>
+        </div>
       </div>
-      <div class="text-sm uppercase text-green-500 flex items-center justify-center">
-        <span class="text-2xl font-bold">{{ gameStore.score }}</span>&nbsp;Points
+      <div v-else class="text-sm uppercase">
+        <p class="mt-4 text-sm uppercase text-red-500 flex items-center justify-center">
+          Game Over
+        </p>
+        <p class="mt-1 text-sm uppercase text-gray-500 flex items-center justify-center">
+          Final Score:
+        </p>
+        <div class="text-sm uppercase text-green-500 flex items-center justify-center">
+          <span class="text-3xl font-bold">{{ gameStore.score }}</span>
+          &nbsp;of&nbsp;
+          <span class="text-xl font-bold">{{ gameStore.previousPotentialCorrectAnswers }}</span>
+          &nbsp;Possible Points
+        </div>
       </div>
       <p class="mt-2 text-sm uppercase text-gray-500">
         High Score: {{ gameStore.highScoreData.score }}/{{ gameStore.highScoreData.potentialCorrectAnswers }}
         ({{ gameStore.highScoreAccuracy }}%)
       </p>
     </div>
-    <div v-if="gameStore.isPaused || gameStore.incorrectResponses >= 3">
+    <div v-if="gameStore.isStopped || gameStore.incorrectResponses >= 3">
       <ConfigStart
         :nBack="Number(nBackInput)"
         :timeLeft="Number(timeLeftInput)"
@@ -57,7 +73,7 @@
       />
     </div>
     <button @click="toggleGame" class="mx-1 mt-3 bg-gray-800 hover:bg-gray-950 text-gray-400 py-1 px-2 rounded">
-      {{ gameStore.isPaused ? 'Start' : 'End' }} Game
+      {{ gameStore.isStopped ? 'Start' : 'Stop' }} Game
     </button>
     <button
       @click="toggleDeterministicMode"
@@ -142,8 +158,8 @@ export default {
     };
 
     const toggleGame = () => {
-      console.log(gameStore.isPaused ? "Resuming game" : "Pausing game");
-      gameStore.isPaused ? gameStore.startGame(timeLeftInput.value) : gameStore.stopGame();
+      console.log(gameStore.isStopped ? "Resuming game" : "Stopping game");
+      gameStore.isStopped ? gameStore.startGame(timeLeftInput.value) : gameStore.stopGame();
     };
 
     onUnmounted(() => {

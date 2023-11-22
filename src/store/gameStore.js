@@ -21,7 +21,7 @@ export const useGameStore = defineStore('game', {
     incrementSound: new Audio(incrementSound),
     isAudioEnabled: JSON.parse(localStorage.getItem('isAudioEnabled')) ?? true,
     isDeterministic: false,
-    isPaused: false,
+    isStopped: false,
     level: 1,
     nBack: 2,
     potentialCorrectAnswers: 0,
@@ -56,7 +56,7 @@ export const useGameStore = defineStore('game', {
       return stimulus;
     },
     setNewStimulus() {
-      if (this.isPaused) {
+      if (this.isStopped) {
         console.log("Game is paused. Skipping setNewStimulus.");
         return;
       }
@@ -126,7 +126,7 @@ export const useGameStore = defineStore('game', {
       this.score = 0;
       this.incorrectResponses = 0;
       this.timeLeft = 5;
-      this.isPaused = false;
+      this.isStopped = false;
       this.stimulusHistory = [];
       this.potentialCorrectAnswers = 0;
       this.previousPotentialCorrectAnswers = 0;
@@ -155,7 +155,7 @@ export const useGameStore = defineStore('game', {
     stopGame() {
       console.log("Stopping game");
       clearInterval(this.timer);
-      this.isPaused = true;
+      this.isStopped = true;
     },
     respondToStimulus(stimulusType) {
       console.log(`Responding to stimulus: ${stimulusType}`);
