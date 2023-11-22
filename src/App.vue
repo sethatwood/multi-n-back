@@ -61,7 +61,7 @@
       </div>
       <p class="mt-2 text-sm uppercase text-gray-500">
         High Score: {{ gameStore.highScoreData.score }}/{{ gameStore.highScoreData.potentialCorrectAnswers }}
-        ({{ gameStore.highScoreAccuracy }}%)
+        ({{ gameStore.highScoreAccuracy }}%) <span class="p-1 cursor-pointer" @click="resetHighScore">&#x24E7;</span>
       </p>
     </div>
     <div v-if="gameStore.isStopped || gameStore.incorrectResponses >= 3">
@@ -215,12 +215,17 @@ export default {
       gameStore.toggleAudio();
     };
 
+    const resetHighScore = () => {
+      gameStore.resetHighScore();
+    };
+
     return {
       buttonClass,
       colorClass,
       dismissInstructionMessage,
       gameStore,
       nBackInput,
+      resetHighScore,
       respond,
       responseButtons,
       scoreClass,

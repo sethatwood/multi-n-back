@@ -139,6 +139,11 @@ export const useGameStore = defineStore('game', {
       this.deterministicIndex = 0;
       this.setNewStimulus();
     },
+    resetHighScore() {
+      console.log("Resetting high score");
+      this.highScoreData = { score: 0, potentialCorrectAnswers: 0 };
+      localStorage.setItem('highScoreData', JSON.stringify(this.highScoreData));
+    },
     startGame(timeLeft = 5) {
       console.log("Starting game");
       this.resetGameState();
