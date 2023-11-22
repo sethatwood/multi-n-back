@@ -1,111 +1,113 @@
 <template>
-  <div v-if="showModal" class="max-w-xl mx-auto flex items-center text-white" id="howToPlayModal">
-    <div class="relative mx-auto p-5 container bg-slate-900">
-      <IntroHead />
-      <ConfigStart
-        :nBack="Number(nBackInput)"
-        :timeLeft="Number(timeLeftInput)"
-        @update:nBack="nBackInput = $event"
-        @update:timeLeft="timeLeftInput = $event"
-        @startGame="startGame"
+  <div class="h-screen flex items-center justify-center">
+    <div v-if="showModal" class="max-w-xl mx-auto flex items-center text-white" id="howToPlayModal">
+      <div class="relative mx-auto p-5 container bg-slate-900">
+        <IntroHead />
+        <ConfigStart
+          :nBack="Number(nBackInput)"
+          :timeLeft="Number(timeLeftInput)"
+          @update:nBack="nBackInput = $event"
+          @update:timeLeft="timeLeftInput = $event"
+          @startGame="startGame"
+        />
+        <IntroContent :n-back="gameStore.nBack" />
+        <Footer />
+      </div>
+    </div>
+    <div v-else class="w-screen max-w-md mx-auto px-4 text-center uppercase text-white bg-slate-900">
+      <div v-if="showInstructionMessage" class="my-6 text-center text-gray-400 text-sm cursor-pointer" @click="dismissInstructionMessage">
+        &#x24E7; Match attributes from {{ gameStore.nBack }} steps back
+      </div>
+      <div class="mt-8 mb-3">
+        <p class="countdown-text">{{ gameStore.timeLeft }}</p>
+      </div>
+      <Stimulus
+        class="mb-3"
+        :color="gameStore.currentStimulus.color"
+        :emoji="gameStore.currentStimulus.emoji"
+        :position="gameStore.currentStimulus.position"
+        :shape="gameStore.currentStimulus.shape"
+        :flashBorder="gameStore.flashBorder"
       />
-      <IntroContent :n-back="gameStore.nBack" />
+      <div class="grid grid-cols-2 gap-3">
+        <button v-for="button in responseButtons" :key="button.type" class="w-full"
+          :disabled="gameStore.respondedThisTurn[button.type] || gameStore.isEarlyInGame"
+          :class="buttonClass(gameStore.respondedThisTurn[button.type], gameStore.isEarlyInGame)"
+          @click="respond(button.type)">
+          {{ button.label }}
+        </button>
+      </div>
+      <div class="text-center">
+        <div v-if="!gameStore.isStopped" class="strikes-score">
+          <div class="mt-4 text-sm uppercase text-red-500 flex items-center justify-center">
+            <span class="text-2xl font-bold">{{ gameStore.incorrectResponses }}</span>&nbsp;Strikes
+          </div>
+          <div class="text-sm uppercase text-green-500 flex items-center justify-center">
+            <span class="text-3xl font-bold">{{ gameStore.score }}</span>
+          </div>
+        </div>
+        <div v-else class="text-sm uppercase">
+          <p class="mt-4 text-sm uppercase text-red-500 flex items-center justify-center">
+            Game Over
+          </p>
+          <p class="mt-1 text-sm uppercase text-gray-500 flex items-center justify-center">
+            Final Score:
+          </p>
+          <div class="text-xs uppercase text-green-500 flex items-center justify-center">
+            <span class="text-3xl font-bold">{{ gameStore.score }}</span>
+            &nbsp;of&nbsp;
+            <span class="text-xl font-bold">{{ gameStore.previousPotentialCorrectAnswers }}</span>
+            &nbsp;Possible Points
+            <span class="ml-1 text-lg font-bold">({{ gameStore.finalScoreAccuracy }}%)</span>
+          </div>
+        </div>
+        <p class="mt-2 text-sm uppercase text-gray-500">
+          High Score: {{ gameStore.highScoreData.score }}/{{ gameStore.highScoreData.potentialCorrectAnswers }}
+          ({{ gameStore.highScoreAccuracy }}%) <span class="p-1 cursor-pointer" @click="resetHighScore">&#x24E7;</span>
+        </p>
+      </div>
+      <div v-if="gameStore.isStopped || gameStore.incorrectResponses >= 3">
+        <ConfigStart
+          :nBack="Number(nBackInput)"
+          :timeLeft="Number(timeLeftInput)"
+          @update:nBack="nBackInput = $event"
+          @update:timeLeft="timeLeftInput = $event"
+          @startGame="startGame"
+        />
+      </div>
+      <!-- <button @click="toggleGame" class="mx-1 mt-3 bg-gray-800 hover:bg-gray-950 text-gray-400 py-1 px-2 rounded">
+        {{ gameStore.isStopped ? 'Start' : 'Stop' }} Game
+      </button>
+      <button
+        @click="toggleDeterministicMode"
+        class="mx-1 my-1 bg-gray-800 hover:bg-gray-950 text-gray-400 py-1 px-2 rounded"
+      >
+        {{ gameStore.isDeterministic ? 'Disable' : 'Enable' }} Deterministic
+      </button> -->
+      <div class="mt-2">
+        <button class="text-xs text-gray-400 bg-gray-800  hover:bg-gray-950 p-3 rounded-full focus:outline-none" @click="toggleAudio">
+          <i v-if="gameStore.isAudioEnabled" class="fas fa-volume-up"></i>
+          <i v-else class="fas fa-volume-mute"></i>
+        </button>
+      </div>
+      <div
+        v-if="gameStore.isDeterministic"
+        class="mt-4 text-center text-sm"
+      >
+        <div v-for="stimulus, index in gameStore.deterministicStimuli" :key="index" class="mt-1">
+            {{ gameStore.deterministicIndex - 1 === index ? '->' : '' }}
+            <span :class="colorClass(stimulus.color)">{{ stimulus.color }}</span>
+            •
+            {{ stimulus.emoji }}
+            •
+            {{ stimulus.position }}
+            •
+            {{ stimulus.shape }}
+            {{ gameStore.deterministicIndex - 1 === index ? '<-' : '' }}
+        </div>
+      </div>
       <Footer />
     </div>
-  </div>
-  <div v-else class="max-w-md mx-auto px-4 text-center uppercase text-white bg-slate-900">
-    <div v-if="showInstructionMessage" class="my-6 text-center text-gray-400 text-sm cursor-pointer" @click="dismissInstructionMessage">
-      &#x24E7; Match attributes from {{ gameStore.nBack }} steps back
-    </div>
-    <div class="mt-8 mb-3">
-      <p class="countdown-text">{{ gameStore.timeLeft }}</p>
-    </div>
-    <Stimulus
-      class="mb-3"
-      :color="gameStore.currentStimulus.color"
-      :emoji="gameStore.currentStimulus.emoji"
-      :position="gameStore.currentStimulus.position"
-      :shape="gameStore.currentStimulus.shape"
-      :flashBorder="gameStore.flashBorder"
-    />
-    <div class="grid grid-cols-2 gap-3">
-      <button v-for="button in responseButtons" :key="button.type" class="w-full"
-        :disabled="gameStore.respondedThisTurn[button.type] || gameStore.isEarlyInGame"
-        :class="buttonClass(gameStore.respondedThisTurn[button.type], gameStore.isEarlyInGame)"
-        @click="respond(button.type)">
-        {{ button.label }}
-      </button>
-    </div>
-    <div class="text-center">
-      <div v-if="!gameStore.isStopped" class="strikes-score">
-        <div class="mt-4 text-sm uppercase text-red-500 flex items-center justify-center">
-          <span class="text-2xl font-bold">{{ gameStore.incorrectResponses }}</span>&nbsp;Strikes
-        </div>
-        <div class="text-sm uppercase text-green-500 flex items-center justify-center">
-          <span class="text-3xl font-bold">{{ gameStore.score }}</span>
-        </div>
-      </div>
-      <div v-else class="text-sm uppercase">
-        <p class="mt-4 text-sm uppercase text-red-500 flex items-center justify-center">
-          Game Over
-        </p>
-        <p class="mt-1 text-sm uppercase text-gray-500 flex items-center justify-center">
-          Final Score:
-        </p>
-        <div class="text-xs uppercase text-green-500 flex items-center justify-center">
-          <span class="text-3xl font-bold">{{ gameStore.score }}</span>
-          &nbsp;of&nbsp;
-          <span class="text-xl font-bold">{{ gameStore.previousPotentialCorrectAnswers }}</span>
-          &nbsp;Possible Points
-          <span class="ml-1 text-lg font-bold">({{ gameStore.finalScoreAccuracy }}%)</span>
-        </div>
-      </div>
-      <p class="mt-2 text-sm uppercase text-gray-500">
-        High Score: {{ gameStore.highScoreData.score }}/{{ gameStore.highScoreData.potentialCorrectAnswers }}
-        ({{ gameStore.highScoreAccuracy }}%) <span class="p-1 cursor-pointer" @click="resetHighScore">&#x24E7;</span>
-      </p>
-    </div>
-    <div v-if="gameStore.isStopped || gameStore.incorrectResponses >= 3">
-      <ConfigStart
-        :nBack="Number(nBackInput)"
-        :timeLeft="Number(timeLeftInput)"
-        @update:nBack="nBackInput = $event"
-        @update:timeLeft="timeLeftInput = $event"
-        @startGame="startGame"
-      />
-    </div>
-    <!-- <button @click="toggleGame" class="mx-1 mt-3 bg-gray-800 hover:bg-gray-950 text-gray-400 py-1 px-2 rounded">
-      {{ gameStore.isStopped ? 'Start' : 'Stop' }} Game
-    </button>
-    <button
-      @click="toggleDeterministicMode"
-      class="mx-1 my-1 bg-gray-800 hover:bg-gray-950 text-gray-400 py-1 px-2 rounded"
-    >
-      {{ gameStore.isDeterministic ? 'Disable' : 'Enable' }} Deterministic
-    </button> -->
-    <div class="mt-2">
-      <button class="text-xs text-gray-400 bg-gray-800  hover:bg-gray-950 p-3 rounded-full focus:outline-none" @click="toggleAudio">
-        <i v-if="gameStore.isAudioEnabled" class="fas fa-volume-up"></i>
-        <i v-else class="fas fa-volume-mute"></i>
-      </button>
-    </div>
-    <div
-      v-if="gameStore.isDeterministic"
-      class="mt-4 text-center text-sm"
-    >
-      <div v-for="stimulus, index in gameStore.deterministicStimuli" :key="index" class="mt-1">
-          {{ gameStore.deterministicIndex - 1 === index ? '->' : '' }}
-          <span :class="colorClass(stimulus.color)">{{ stimulus.color }}</span>
-          •
-          {{ stimulus.emoji }}
-          •
-          {{ stimulus.position }}
-          •
-          {{ stimulus.shape }}
-          {{ gameStore.deterministicIndex - 1 === index ? '<-' : '' }}
-      </div>
-    </div>
-    <Footer />
   </div>
 </template>
 
