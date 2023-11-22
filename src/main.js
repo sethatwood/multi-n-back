@@ -3,6 +3,7 @@ import { createPinia } from 'pinia'
 import { useGameStore } from './store/gameStore';
 import './style.css'
 import App from './App.vue'
+import './registerServiceWorker'
 
 const app = createApp(App);
 
