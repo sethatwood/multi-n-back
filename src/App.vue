@@ -1,6 +1,7 @@
 <template>
-  <div v-if="showModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 overflow-y-auto" id="howToPlayModal">
-    <div class="relative mx-auto p-5 border container shadow-lg rounded-md bg-slate-200">
+  <div v-if="showModal" class="max-w-xl mx-auto flex items-center text-white" id="howToPlayModal">
+    <div class="relative mx-auto p-5 container bg-slate-900">
+      <IntroHead />
       <ConfigStart
         :nBack="Number(nBackInput)"
         :timeLeft="Number(timeLeftInput)"
@@ -73,7 +74,7 @@
         @startGame="startGame"
       />
     </div>
-    <button @click="toggleGame" class="mx-1 mt-3 bg-gray-800 hover:bg-gray-950 text-gray-400 py-1 px-2 rounded">
+    <!-- <button @click="toggleGame" class="mx-1 mt-3 bg-gray-800 hover:bg-gray-950 text-gray-400 py-1 px-2 rounded">
       {{ gameStore.isStopped ? 'Start' : 'Stop' }} Game
     </button>
     <button
@@ -81,7 +82,7 @@
       class="mx-1 my-1 bg-gray-800 hover:bg-gray-950 text-gray-400 py-1 px-2 rounded"
     >
       {{ gameStore.isDeterministic ? 'Disable' : 'Enable' }} Deterministic
-    </button>
+    </button> -->
     <div class="mt-2">
       <button class="text-xs text-gray-400 bg-gray-800  hover:bg-gray-950 p-3 rounded-full focus:outline-none" @click="toggleAudio">
         <i v-if="gameStore.isAudioEnabled" class="fas fa-volume-up"></i>
@@ -111,6 +112,7 @@
 <script>
 import { onUnmounted, ref, watch, computed } from 'vue';
 import { useGameStore } from './store/gameStore';
+import IntroHead from './IntroHead.vue';
 import IntroContent from './IntroContent.vue';
 import ConfigStart from './ConfigStart.vue';
 import Stimulus from './Stimulus.vue';
@@ -119,11 +121,13 @@ import Footer from './Footer.vue';
 export default {
   name: 'App',
   components: {
+    IntroHead,
     IntroContent,
     ConfigStart,
     Stimulus,
     Footer,
-  },
+    IntroHead
+},
   setup() {
     const gameStore = useGameStore();
     const nBackInput = ref(gameStore.nBack);
