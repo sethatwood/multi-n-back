@@ -209,9 +209,9 @@ export const useGameStore = defineStore('game', {
       const nBackIndex = state.stimulusHistory.length - state.nBack - 1;
       return nBackIndex < 0;
     },
-    currentScoreAccuracy: (state) => {
+    finalScoreAccuracy: (state) => {
       if (state.potentialCorrectAnswers === 0) return 0;
-      return Math.round((state.score / state.potentialCorrectAnswers) * 100);
+      return Math.round((state.score / state.previousPotentialCorrectAnswers) * 100);
     },
     highScoreAccuracy: (state) => {
       const highScorePotential = state.highScoreData.potentialCorrectAnswers;

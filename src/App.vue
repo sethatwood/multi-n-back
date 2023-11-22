@@ -51,11 +51,12 @@
         <p class="mt-1 text-sm uppercase text-gray-500 flex items-center justify-center">
           Final Score:
         </p>
-        <div class="text-sm uppercase text-green-500 flex items-center justify-center">
+        <div class="text-xs uppercase text-green-500 flex items-center justify-center">
           <span class="text-3xl font-bold">{{ gameStore.score }}</span>
           &nbsp;of&nbsp;
           <span class="text-xl font-bold">{{ gameStore.previousPotentialCorrectAnswers }}</span>
           &nbsp;Possible Points
+          <span class="ml-1 text-lg font-bold">({{ gameStore.finalScoreAccuracy }}%)</span>
         </div>
       </div>
       <p class="mt-2 text-sm uppercase text-gray-500">
