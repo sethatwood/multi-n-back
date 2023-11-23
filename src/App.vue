@@ -84,10 +84,10 @@
       >
         {{ gameStore.isDeterministic ? 'Disable' : 'Enable' }} Deterministic
       </button> -->
-      <div class="mt-2">
-        <button class="text-xs text-gray-400 bg-gray-800  hover:bg-gray-950 p-3 rounded-full focus:outline-none" @click="toggleAudio">
-          <i v-if="gameStore.isAudioEnabled" class="fas fa-volume-up"></i>
-          <i v-else class="fas fa-volume-mute"></i>
+      <div class="mt-3">
+        <button class="text-xs text-gray-600 bg-gray-600 hover:bg-gray-500 p-1 rounded-full focus:outline-none" @click="toggleAudio">
+          <img v-if="gameStore.isAudioEnabled" class="h-5 w-5" :src="volumeUpIcon" alt="Volume Up" />
+          <img v-else class="h-5 w-5" :src="volumeMuteIcon" alt="Volume Mute" />
         </button>
       </div>
       <div
@@ -114,6 +114,8 @@
 <script>
 import { onUnmounted, ref, watch, computed } from 'vue';
 import { useGameStore } from './store/gameStore';
+import volumeUpIcon from './assets/volume-up-solid.svg';
+import volumeMuteIcon from './assets/volume-mute-solid.svg';
 import IntroHead from './IntroHead.vue';
 import IntroContent from './IntroContent.vue';
 import ConfigStart from './ConfigStart.vue';
@@ -242,6 +244,8 @@ export default {
       toggleAudio,
       toggleDeterministicMode,
       toggleGame,
+      volumeMuteIcon,
+      volumeUpIcon,
     };
   },
 };
