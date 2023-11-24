@@ -16,7 +16,7 @@ export const useGameStore = defineStore('game', {
       { color: 'green', emoji: 'flower', position: 'right', shape: 'circle' },
     ],
     flashBorder: false,
-    highScoreData: JSON.parse(localStorage.getItem('highScoreData')) || { score: 0, potentialCorrectAnswers: 0 },
+    highScoreData: JSON.parse(localStorage.getItem('highScoreData')) || { score: 0, potentialCorrectAnswers: 0, nBack: null },
     incorrectResponses: 0,
     incrementSound: new Audio(incrementSound),
     isAudioEnabled: JSON.parse(localStorage.getItem('isAudioEnabled')) ?? true,
@@ -191,15 +191,24 @@ export const useGameStore = defineStore('game', {
           this.playSound(this.strikeSound);
           this.incorrectResponses += 1;
           if (this.incorrectResponses >= 3) {
-            if (this.score > this.highScoreData.score) {
+            const currentAccuracy = Math.round((this.score / this.previousPotentialCorrectAnswers) * 100);
+            const highScoreAccuracy = Math.round((this.highScoreData.score / this.highScoreData.potentialCorrectAnswers) * 100);
+
+            const isNewHighScore = this.score > this.highScoreData.score;
+            const isSameScoreButBetterAccuracy = this.score === this.highScoreData.score && currentAccuracy > highScoreAccuracy;
+            const isHigherNBack = this.nBack > this.highScoreData.nBack;
+
+            if (isNewHighScore || isSameScoreButBetterAccuracy || isHigherNBack) {
               this.highScoreData = {
                 score: this.score,
-                potentialCorrectAnswers: this.previousPotentialCorrectAnswers
+                potentialCorrectAnswers: this.previousPotentialCorrectAnswers,
+                nBack: this.nBack
               };
               localStorage.setItem('highScoreData', JSON.stringify(this.highScoreData));
             }
+
             this.stopGame();
-            alert("Game over! You've reached 3 strikes."); // Consider replacing with a Tailwind modal
+            alert("Game over! You've reached 3 strikes.");
           }
         }
         console.log(`Response is ${isCorrect ? 'correct' : 'incorrect'}. Score: ${this.score}`);
