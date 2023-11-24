@@ -65,7 +65,7 @@
           High Score: {{ gameStore.highScoreData.score }}/{{ gameStore.highScoreData.potentialCorrectAnswers }}
           ({{ gameStore.highScoreAccuracy }}%)
           <span v-if="gameStore.highScoreData.nBack">N={{ gameStore.highScoreData.nBack }}</span>
-          <span class="p-1 cursor-pointer" @click="resetHighScore">&#x24E7;</span>
+          <span class="p-1 cursor-pointer" @click="resetHighScore"> &#x24E7;</span>
         </p>
       </div>
       <div v-if="gameStore.isStopped || gameStore.incorrectResponses >= 3">
